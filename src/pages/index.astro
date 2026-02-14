@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
 ---
 
 <BaseLayout 
@@ -18,12 +19,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Viele Dienstleistungen unter einem Dach – professionell, zuverlässig und kompetent
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/kontakt" class="btn-accent">
+          <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl/20">
             Jetzt Kontakt aufnehmen
-          </a>
-          <a href="/leistungen" class="btn bg-white text-primary-700 hover:bg-primary-50">
+          </Button>
+          <Button href="/leistungen" variant="secondary" size="lg" class="text-primary-700 border-white/50 hover:bg-white shadow-xl/10">
             Unsere Leistungen
-          </a>
+          </Button>
         </div>
       </div>
     </div>
@@ -177,12 +178,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Kontaktieren Sie uns noch heute für ein unverbindliches Angebot
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/kontakt" class="btn-accent">
+        <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl">
           Kontakt aufnehmen
-        </a>
-        <a href="tel:+436642528150" class="btn bg-white text-primary-700 hover:bg-primary-50">
+        </Button>
+        <Button href="tel:+436642528150" variant="secondary" size="lg" class="text-primary-700 border-transparent hover:bg-white shadow-xl">
           0664 25 28 150
-        </a>
+        </Button>
       </div>
     </div>
   </section>

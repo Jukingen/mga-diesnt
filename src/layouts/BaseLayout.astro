@@ -7,6 +7,9 @@ interface Props {
 
 const { title, description, image = '/images/og-image.jpg' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+import TopBanner from '../components/TopBanner.astro';
+import Header from '../components/Header.astro';
 ---
 
 <!doctype html>
@@ -42,42 +45,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <div class="flex flex-col min-h-screen">
-      <header>
-        <slot name="header">
-          <div class="bg-white shadow-sm sticky top-0 z-50">
-            <nav class="container-custom py-4">
-              <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center space-x-2">
-                  <span class="text-2xl font-bold text-primary-600">MIGA</span>
-                  <span class="text-sm text-dark-600 hidden sm:inline">Dienstleistungen GmbH</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                  <a href="/" class="text-dark-700 hover:text-primary-600 transition-colors font-medium">Startseite</a>
-                  <a href="/leistungen" class="text-dark-700 hover:text-primary-600 transition-colors font-medium">Leistungen</a>
-                  <a href="/uber-uns" class="text-dark-700 hover:text-primary-600 transition-colors font-medium">Über uns</a>
-                  <a href="/kontakt" class="btn-primary text-sm">Kontakt</a>
-                </div>
-                
-                <!-- Mobile menu button -->
-                <button id="mobile-menu-button" class="md:hidden p-2 text-dark-700 hover:text-primary-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-              </div>
-              
-              <!-- Mobile menu -->
-              <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 space-y-3">
-                <a href="/" class="block text-dark-700 hover:text-primary-600 transition-colors font-medium">Startseite</a>
-                <a href="/leistungen" class="block text-dark-700 hover:text-primary-600 transition-colors font-medium">Leistungen</a>
-                <a href="/uber-uns" class="block text-dark-700 hover:text-primary-600 transition-colors font-medium">Über uns</a>
-                <a href="/kontakt" class="block text-dark-700 hover:text-primary-600 transition-colors font-medium">Kontakt</a>
-              </div>
-            </nav>
-          </div>
-        </slot>
-      </header>
+      <TopBanner />
+      <slot name="header">
+        <Header />
+      </slot>
       
       <main class="flex-grow">
         <slot />
@@ -130,16 +101,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         </div>
       </footer>
     </div>
-    
-    <script>
-      // Mobile menu toggle
-      const menuButton = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      
-      menuButton?.addEventListener('click', () => {
-        mobileMenu?.classList.toggle('hidden');
-      });
-    </script>
     
     <style is:global>
       @import '../styles/global.css';

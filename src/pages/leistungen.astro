@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
 ---
 
 <BaseLayout 
@@ -165,7 +166,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="container-custom text-center">
       <h2 class="heading-2 text-white mb-6">Interesse an unseren Leistungen?</h2>
       <p class="text-xl text-primary-50 mb-8">Kontaktieren Sie uns für ein unverbindliches Angebot</p>
-      <a href="/kontakt" class="btn-accent">Jetzt Kontakt aufnehmen</a>
+      <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl">Jetzt Kontakt aufnehmen</Button>
     </div>
   </section>
 </BaseLayout>

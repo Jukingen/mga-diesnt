@@ -1,0 +1,134 @@
+---
+import { getEntry } from 'astro:content';
+import Button from './Button.astro';
+
+const siteSettings = await getEntry('settings', 'site');
+const { header } = siteSettings.data;
+
+const navItems = [
+  { href: '/', label: 'Startseite' },
+  { href: '/leistungen', label: 'Leistungen' },
+  { href: '/uber-uns', label: 'Über uns' },
+  // { href: '/kontakt', label: 'Kontakt' }, // CTA button handles this
+];
+
+const currentPath = Astro.url.pathname;
+
+// Clean up trailing slash for comparison
+const normalizedPath = currentPath.endsWith('/') && currentPath.length > 1 
+  ? currentPath.slice(0, -1) 
+  : currentPath;
+---
+
+<header class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-40 transition-all duration-300" id="main-header">
+  <nav class="container-custom py-4">
+    <div class="flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2 group">
+        <div class="flex flex-col">
+          <span class="text-2xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors">
+            {header.brand_name}
+          </span>
+          {header.optional_subtitle && (
+            <span class="text-xs text-dark-500 hidden sm:inline-block -mt-1 font-medium tracking-wide">
+              {header.optional_subtitle}
+            </span>
+          )}
+        </div>
+      </a>
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        {navItems.map(item => (
+          <a 
+            href={item.href} 
+            class={`font-medium transition-colors hover:text-primary-600 py-2 relative group ${
+              (normalizedPath === item.href) || (item.href !== '/' && normalizedPath.startsWith(item.href))
+                ? 'text-primary-600' 
+                : 'text-dark-700'
+            }`}
+          >
+            {item.label}
+            <span class={`absolute bottom-0 left-0 w-full h-0.5 bg-primary-600 transform origin-left transition-transform duration-300 ${
+              (normalizedPath === item.href) || (item.href !== '/' && normalizedPath.startsWith(item.href))
+              ? 'scale-x-100' 
+              : 'scale-x-0 group-hover:scale-x-100'
+            }`}></span>
+          </a>
+        ))}
+        <Button href={header.header_cta_link} size="sm" class="ml-4 font-semibold shadow-md hover:shadow-lg">
+          {header.header_cta_label}
+        </Button>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <button 
+        id="mobile-menu-button" 
+        class="md:hidden p-2 text-dark-700 hover:text-primary-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-100 transition-colors"
+        aria-label="Menü öffnen"
+      >
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Mobile menu -->
+    <div 
+      id="mobile-menu" 
+      class="hidden md:hidden mt-4 pb-6 space-y-3 border-t border-gray-100 pt-6 animate-in slide-in-from-top-4 duration-200"
+    >
+      {navItems.map(item => (
+        <a 
+          href={item.href} 
+          class={`block px-4 py-3 rounded-xl transition-all duration-200 ${
+            (normalizedPath === item.href) || (item.href !== '/' && normalizedPath.startsWith(item.href))
+              ? 'text-primary-700 bg-primary-50 font-bold shadow-sm' 
+              : 'text-dark-700 hover:bg-gray-50 hover:text-primary-600 font-medium'
+          }`}
+        >
+          {item.label}
+        </a>
+      ))}
+      <div class="pt-4 px-1">
+        <Button href={header.header_cta_link} class="w-full justify-center text-base py-3 shadow-md">
+          {header.header_cta_label}
+        </Button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const menuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const header = document.getElementById('main-header');
+  
+  menuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    
+    // Change icon based on state (optional enhancement)
+    const isExpanded = !mobileMenu?.classList.contains('hidden');
+    menuButton.setAttribute('aria-expanded', isExpanded.toString());
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+      if (!menuButton?.contains(e.target as Node) && !mobileMenu.contains(e.target as Node)) {
+        mobileMenu.classList.add('hidden');
+        menuButton?.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  // Add scroll effect to header
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      header?.classList.add('shadow-md', 'bg-white/95');
+      header?.classList.remove('shadow-sm');
+    } else {
+      header?.classList.remove('shadow-md', 'bg-white/95');
+      header?.classList.add('shadow-sm');
+    }
+  });
+</script>

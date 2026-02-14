@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
 ---
 
 <BaseLayout 
@@ -69,9 +70,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               ></textarea>
             </div>
 
-            <button type="submit" class="btn-primary w-full">
+            <Button type="submit" variant="primary" class="w-full shadow-md">
               Nachricht senden
-            </button>
+            </Button>
           </form>
         </div>
 

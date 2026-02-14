@@ -48,3 +48,31 @@ collections:
       - {label: "Beschreibung", name: "description", widget: "text"}
       - {label: "Leistungen", name: "items", widget: "list"}
       - {label: "Reihenfolge", name: "order", widget: "number"}
+
+  - name: "settings"
+    label: "Einstellungen"
+    files:
+      - label: "Site Settings"
+        name: "site"
+        file: "src/content/settings/site.md"
+        fields:
+          - label: "Top Banner"
+            name: "top_banner"
+            widget: "object"
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
+              - {label: "Text", name: "text", widget: "string"}
+              - {label: "Telefon", name: "phone", widget: "string"}
+              - {label: "E-Mail", name: "email", widget: "string"}
+              - {label: "Adresse (Kurz)", name: "address_short", widget: "string"}
+              - {label: "CTA Text", name: "cta_label", widget: "string"}
+              - {label: "CTA Link", name: "cta_link", widget: "string"}
+              - {label: "Stil", name: "style_variant", widget: "select", options: ["dark", "light"], default: "dark"}
+          - label: "Header"
+            name: "header"
+            widget: "object"
+            fields:
+              - {label: "Markenname", name: "brand_name", widget: "string"}
+              - {label: "Untertitel (Optional)", name: "optional_subtitle", widget: "string", required: false}
+              - {label: "Header CTA Text", name: "header_cta_label", widget: "string"}
+              - {label: "Header CTA Link", name: "header_cta_link", widget: "string"}
