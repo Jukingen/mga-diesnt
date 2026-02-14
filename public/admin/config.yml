@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "pages"
+    label: "Seiten"
+    files:
+      - label: "Startseite"
+        name: "home"
+        file: "src/content/home.md"
+        fields:
+          - {label: "Titel", name: "title", widget: "string"}
+          - {label: "Untertitel", name: "subtitle", widget: "string"}
+          - {label: "Hero Überschrift", name: "heroHeading", widget: "string"}
+          - {label: "Hero Text", name: "heroText", widget: "text"}
+          - {label: "Über uns Text", name: "aboutText", widget: "text"}
+          
+      - label: "Über uns"
+        name: "about"
+        file: "src/content/about.md"
+        fields:
+          - {label: "Titel", name: "title", widget: "string"}
+          - {label: "Einleitung", name: "intro", widget: "text"}
+          - {label: "Haupttext", name: "content", widget: "markdown"}
+          
+      - label: "Kontakt"
+        name: "contact"
+        file: "src/content/contact.md"
+        fields:
+          - {label: "Titel", name: "title", widget: "string"}
+          - {label: "Adresse", name: "address", widget: "text"}
+          - {label: "Telefon", name: "phone", widget: "string"}
+          - {label: "E-Mail", name: "email", widget: "string"}
+          
+  - name: "services"
+    label: "Leistungen"
+    folder: "src/content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Titel", name: "title", widget: "string"}
+      - {label: "Beschreibung", name: "description", widget: "text"}
+      - {label: "Leistungen", name: "items", widget: "list"}
+      - {label: "Reihenfolge", name: "order", widget: "number"}
