@@ -24,23 +24,26 @@ const settingsCollection = defineCollection({
 
 const servicesCollection = defineCollection({
     type: 'content',
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         description: z.string(),
         items: z.array(z.string()),
         order: z.number().optional(),
+        image: image().optional(),
     }),
 });
 
 const pagesCollection = defineCollection({
     type: 'content',
-    schema: z.object({
+    schema: ({ image }) => z.object({
         title: z.string(),
         subtitle: z.string().optional(),
         heroHeading: z.string().optional(),
         heroText: z.string().optional(),
+        hero_background_image: image().optional(),
         aboutText: z.string().optional(),
         intro: z.string().optional(),
+        about_image: image().optional(),
         address: z.string().optional(),
         phone: z.string().optional(),
         email: z.string().optional(),
