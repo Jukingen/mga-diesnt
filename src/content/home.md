@@ -1,0 +1,7 @@
+---
+title: "MIGA Dienstleistungen GmbH"
+subtitle: "Ihr zuverlässiger Partner in Graz"
+heroHeading: "Ihr zuverlässiger Allround-Dienstleister in Graz"
+heroText: "Viele Dienstleistungen unter einem Dach – professionell, zuverlässig und kompetent"
+aboutText: "MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team und bietet zahlreiche Arbeiten unter einem Dach an. Als Meisterbetrieb für Denkmal-, Fassaden- und Gebäudereinigung stehen wir für höchste Qualität und Zuverlässigkeit."
+---
