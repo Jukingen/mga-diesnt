@@ -1,14 +1,25 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import { getEntry } from 'astro:content';
+const entry = await getEntry('pages', 'home');
+if (!entry) throw new Error('Home entry not found');
+const { title, subtitle, heroHeading, heroText, aboutText, hero_background_image, headerBanner } = entry.data as any;
+
+// Default image if none provided
+const heroBg = hero_background_image || '/images/hero-bg-placeholder.jpg';
 ---
 
 <BaseLayout 
-  title="MIGA Dienstleistungen GmbH - Ihr Allround-Dienstleister in Graz"
-  description="MIGA Dienstleistungen GmbH bietet professionelle Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage- und Bauarbeiten in Graz."
+  title={title}
+  description={subtitle || "Ihr Allround-Dienstleister in Graz"}
+  headerBanner={headerBanner}
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+  <section 
+    class="relative bg-gradient-to-br from-primary-600 to-primary-800 text-white bg-cover bg-center"
+    style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${heroBg}')` }}
+  >
     <div class="absolute inset-0 bg-black/20"></div>
     <div class="container-custom relative py-24 md:py-32 lg:py-40">
       <div class="max-w-3xl">

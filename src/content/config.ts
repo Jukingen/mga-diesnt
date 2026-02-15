@@ -1,5 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 
+
 const settingsCollection = defineCollection({
     type: 'content',
     schema: z.object({
@@ -24,29 +25,41 @@ const settingsCollection = defineCollection({
 
 const servicesCollection = defineCollection({
     type: 'content',
-    schema: ({ image }) => z.object({
+    schema: z.object({
         title: z.string(),
         description: z.string(),
         items: z.array(z.string()),
         order: z.number().optional(),
-        image: image().optional(),
+        // Image as string path since it's in public/
+        image: z.string().optional(),
     }),
 });
 
 const pagesCollection = defineCollection({
     type: 'content',
-    schema: ({ image }) => z.object({
+    schema: z.object({
         title: z.string(),
         subtitle: z.string().optional(),
         heroHeading: z.string().optional(),
         heroText: z.string().optional(),
-        hero_background_image: image().optional(),
+        // Image as string path
+        hero_background_image: z.string().optional(),
         aboutText: z.string().optional(),
         intro: z.string().optional(),
-        about_image: image().optional(),
+        // Image as string path
+        about_image: z.string().optional(),
         address: z.string().optional(),
         phone: z.string().optional(),
         email: z.string().optional(),
+        // Header Banner object
+        headerBanner: z.object({
+            enabled: z.boolean().default(false),
+            text: z.string().optional(),
+            cta_label: z.string().optional(),
+            cta_link: z.string().optional(),
+            image: z.string().optional(),
+            variant: z.enum(['dark', 'light']).default('dark'),
+        }).optional(),
     }).passthrough(),
 });
 

@@ -1,15 +1,35 @@
 ---
-interface Props {
-  title: string;
-  description: string;
-  image?: string;
-}
-
-const { title, description, image = '/images/og-image.jpg' } = Astro.props;
+const { title, description, image = '/images/og-image.jpg', headerBanner: pageBanner } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 import TopBanner from '../components/TopBanner.astro';
 import Header from '../components/Header.astro';
+import { getEntry } from 'astro:content';
+
+// Fetch global settings
+const siteSettings = await getEntry('settings', 'site');
+if (!siteSettings) throw new Error('Site settings not found');
+const { top_banner: globalBanner } = siteSettings.data as any;
+
+// Determine which banner to show
+// Priority: Page Banner > Global Banner > None
+let activeBanner = null;
+
+if (pageBanner && pageBanner.enabled) {
+  // Use page-specific banner
+  // Merge with global contact info to keep it consistent if not overridden
+  activeBanner = {
+    ...globalBanner, // Default contact info
+    enabled: true,
+    text: pageBanner.text || globalBanner.text,
+    cta_label: pageBanner.cta_label || globalBanner.cta_label,
+    cta_link: pageBanner.cta_link || globalBanner.cta_link,
+    style_variant: pageBanner.variant || globalBanner.style_variant
+  };
+} else {
+  // Fallback to global banner
+  activeBanner = globalBanner;
+}
 ---
 
 <!doctype html>
@@ -45,7 +65,19 @@ import Header from '../components/Header.astro';
   </head>
   <body>
     <div class="flex flex-col min-h-screen">
-      <TopBanner />
+      {activeBanner && activeBanner.enabled && (
+        <TopBanner 
+          text={activeBanner.text}
+          phone={activeBanner.phone}
+          email={activeBanner.email}
+          address_short={activeBanner.address_short}
+          cta_label={activeBanner.cta_label}
+          cta_link={activeBanner.cta_link}
+          variant={activeBanner.style_variant}
+          enabled={activeBanner.enabled}
+        />
+      )}
+      
       <slot name="header">
         <Header />
       </slot>

@@ -3,7 +3,8 @@ import { getEntry } from 'astro:content';
 import Button from './Button.astro';
 
 const siteSettings = await getEntry('settings', 'site');
-const { header } = siteSettings.data;
+if (!siteSettings) throw new Error('Site settings not found');
+const { header } = siteSettings.data as any;
 
 const navItems = [
   { href: '/', label: 'Startseite' },

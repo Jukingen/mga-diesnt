@@ -4,7 +4,7 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "src/assets/uploads"
+media_folder: "public/assets/uploads"
 public_folder: "/assets/uploads"
 
 collections:
@@ -13,7 +13,7 @@ collections:
     files:
       - label: "Startseite"
         name: "home"
-        file: "src/content/home.md"
+        file: "src/content/pages/home.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
           - {label: "Untertitel", name: "subtitle", widget: "string"}
@@ -21,24 +21,57 @@ collections:
           - {label: "Hero Text", name: "heroText", widget: "text"}
           - {label: "Hero Hintergrundbild", name: "hero_background_image", widget: "image", required: false}
           - {label: "Über uns Text", name: "aboutText", widget: "text"}
+          - label: "Header Banner (Optional)"
+            name: "headerBanner"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: false}
+              - {label: "Text", name: "text", widget: "string", required: false}
+              - {label: "CTA Text", name: "cta_label", widget: "string", required: false}
+              - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
+              - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
+              - {label: "Stil", name: "variant", widget: "select", options: ["dark", "light"], default: "dark"}
           
       - label: "Über uns"
         name: "about"
-        file: "src/content/about.md"
+        file: "src/content/pages/about.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
           - {label: "Einleitung", name: "intro", widget: "text"}
           - {label: "Bild", name: "about_image", widget: "image", required: false}
           - {label: "Haupttext", name: "content", widget: "markdown"}
+          - label: "Header Banner (Optional)"
+            name: "headerBanner"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: false}
+              - {label: "Text", name: "text", widget: "string", required: false}
+              - {label: "CTA Text", name: "cta_label", widget: "string", required: false}
+              - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
+              - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
+              - {label: "Stil", name: "variant", widget: "select", options: ["dark", "light"], default: "dark"}
           
       - label: "Kontakt"
         name: "contact"
-        file: "src/content/contact.md"
+        file: "src/content/pages/contact.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
           - {label: "Adresse", name: "address", widget: "text"}
           - {label: "Telefon", name: "phone", widget: "string"}
           - {label: "E-Mail", name: "email", widget: "string"}
+          - label: "Header Banner (Optional)"
+            name: "headerBanner"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: false}
+              - {label: "Text", name: "text", widget: "string", required: false}
+              - {label: "CTA Text", name: "cta_label", widget: "string", required: false}
+              - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
+              - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
+              - {label: "Stil", name: "variant", widget: "select", options: ["dark", "light"], default: "dark"}
           
   - name: "services"
     label: "Leistungen"
@@ -79,3 +112,5 @@ collections:
               - {label: "Untertitel (Optional)", name: "optional_subtitle", widget: "string", required: false}
               - {label: "Header CTA Text", name: "header_cta_label", widget: "string"}
               - {label: "Header CTA Link", name: "header_cta_link", widget: "string"}
+
+
