@@ -42,7 +42,7 @@ cta_section:
 headerBanner:
   enabled: true
   variant: dark
-  image: /assets/uploads/_edited_steve-lieman-vy_suzp16tg-unsplash-960x300.jpg
+  image: /assets/uploads/_edited_stefan-lehner-birt6rxejuk-unsplash960x300.png
 ---
 
 MIGA Dienstleistungen GmbH ist Ihr **Allrounder-Team** in Graz und Umgebung.
