@@ -20,7 +20,40 @@ collections:
           - {label: "Hero Überschrift", name: "heroHeading", widget: "string"}
           - {label: "Hero Text", name: "heroText", widget: "text"}
           - {label: "Hero Hintergrundbild", name: "hero_background_image", widget: "image", required: false}
-          - {label: "Über uns Text", name: "aboutText", widget: "text"}
+          - label: "Hero Buttons"
+            name: "hero_buttons"
+            widget: "object"
+            fields:
+              - {label: "Button 1 Text", name: "primary_cta_label", widget: "string", default: "Jetzt Kontakt aufnehmen"}
+              - {label: "Button 1 Link", name: "primary_cta_link", widget: "string", default: "/kontakt"}
+              - {label: "Button 2 Text", name: "secondary_cta_label", widget: "string", default: "Unsere Leistungen"}
+              - {label: "Button 2 Link", name: "secondary_cta_link", widget: "string", default: "/leistungen"}
+
+          - label: "Über uns Bereich"
+            name: "about_section"
+            widget: "object"
+            fields:
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Willkommen bei MIGA Dienstleistungen"}
+              - {label: "Text", name: "content", widget: "text", default: "MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team..."}
+
+          - label: "Leistungen Vorschau"
+            name: "services_section"
+            widget: "object"
+            fields:
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Unsere Leistungen"}
+              - {label: "Untertitel", name: "subheading", widget: "string", default: "Von Reinigung bis KFZ-Service – wir sind Ihr kompetenter Partner"}
+
+          - label: "CTA Bereich (Unten)"
+            name: "cta_section"
+            widget: "object"
+            fields:
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Bereit für Ihr Projekt?"}
+              - {label: "Text", name: "content", widget: "text", default: "Kontaktieren Sie uns noch heute für ein unverbindliches Angebot"}
+              - {label: "Button 1 Text", name: "primary_btn_label", widget: "string", default: "Kontakt aufnehmen"}
+              - {label: "Button 1 Link", name: "primary_btn_link", widget: "string", default: "/kontakt"}
+              - {label: "Button 2 Text", name: "secondary_btn_label", widget: "string", default: "0664 25 28 150"}
+              - {label: "Button 2 Link", name: "secondary_btn_link", widget: "string", default: "tel:+436642528150"}
+
           - label: "Header Banner (Optional)"
             name: "headerBanner"
             widget: "object"
@@ -28,8 +61,6 @@ collections:
             fields:
               - {label: "Aktiviert", name: "enabled", widget: "boolean", default: false}
               - {label: "Text", name: "text", widget: "string", required: false}
-              - {label: "CTA Text", name: "cta_label", widget: "string", required: false}
-              - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
               - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
               - {label: "Stil", name: "variant", widget: "select", options: ["dark", "light"], default: "dark"}
           

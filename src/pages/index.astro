@@ -1,13 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 const entry = await getEntry('pages', 'home');
 if (!entry) throw new Error('Home entry not found');
-const { title, subtitle, heroHeading, heroText, aboutText, hero_background_image, headerBanner } = entry.data as any;
+
+const services = await getCollection('services');
+const sortedServices = services.sort((a, b) => (a.data.order || 99) - (b.data.order || 99)).slice(0, 9); // Limit to top 9 or all
+const { 
+  title, 
+  subtitle, 
+  heroHeading, 
+  heroText, 
+  hero_background_image, 
+  headerBanner,
+  hero_buttons,
+  about_section,
+  services_section,
+  cta_section
+} = entry.data as any;
 
 // Default image if none provided
 const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-placeholder.jpg';
+
+// Fallbacks for new sections to prevent crashes if content not yet saved
+const defaultHeroBtns = { primary_cta_label: "Jetzt Kontakt aufnehmen", primary_cta_link: "/kontakt", secondary_cta_label: "Unsere Leistungen", secondary_cta_link: "/leistungen" };
+const finalHeroBtns = hero_buttons || defaultHeroBtns;
+
+const defaultAbout = { heading: "Willkommen bei MIGA Dienstleistungen", content: "MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team..." };
+const finalAbout = about_section || defaultAbout;
+
+const defaultServicesSec = { heading: "Unsere Leistungen", subheading: "Von Reinigung bis KFZ-Service – wir sind Ihr kompetenter Partner" };
+const finalServicesSec = services_section || defaultServicesSec;
+
+const defaultCTA = { heading: "Bereit für Ihr Projekt?", content: "Kontaktieren Sie uns noch heute...", primary_btn_label: "Kontakt aufnehmen", primary_btn_link: "/kontakt", secondary_btn_label: "0664 25 28 150", secondary_btn_link: "tel:+436642528150" };
+const finalCTA = cta_section || defaultCTA;
 ---
 
 <BaseLayout 
@@ -24,17 +51,17 @@ const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-
     <div class="container-custom relative py-24 md:py-32 lg:py-40">
       <div class="max-w-3xl">
         <h1 class="heading-1 text-white mb-6">
-          Ihr zuverlässiger Allround-Dienstleister in Graz
+          {heroHeading}
         </h1>
         <p class="text-xl md:text-2xl text-primary-50 mb-8">
-          Viele Dienstleistungen unter einem Dach – professionell, zuverlässig und kompetent
+          {heroText}
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
-          <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl/20">
-            Jetzt Kontakt aufnehmen
+          <Button href={finalHeroBtns.primary_cta_link} variant="primary" size="lg" class="shadow-xl/20">
+            {finalHeroBtns.primary_cta_label}
           </Button>
-          <Button href="/leistungen" variant="secondary" size="lg" class="text-primary-700 border-white/50 hover:bg-white shadow-xl/10">
-            Unsere Leistungen
+          <Button href={finalHeroBtns.secondary_cta_link} variant="secondary" size="lg" class="text-primary-700 border-white/50 hover:bg-white shadow-xl/10">
+            {finalHeroBtns.secondary_cta_label}
           </Button>
         </div>
       </div>
@@ -45,10 +72,9 @@ const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-
   <section class="section bg-white">
     <div class="container-custom">
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="heading-2 mb-6">Willkommen bei MIGA Dienstleistungen</h2>
+        <h2 class="heading-2 mb-6">{finalAbout.heading}</h2>
         <p class="text-lg text-dark-600 leading-relaxed">
-          MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team und bietet zahlreiche Arbeiten unter einem Dach an. 
-          Als Meisterbetrieb für Denkmal-, Fassaden- und Gebäudereinigung stehen wir für höchste Qualität und Zuverlässigkeit.
+          {finalAbout.content}
         </p>
       </div>
     </div>
@@ -58,125 +84,37 @@ const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-
   <section class="section bg-dark-50">
     <div class="container-custom">
       <div class="text-center mb-12">
-        <h2 class="heading-2 mb-4">Unsere Leistungen</h2>
-        <p class="text-lg text-dark-600">Von Reinigung bis KFZ-Service – wir sind Ihr kompetenter Partner</p>
+        <h2 class="heading-2 mb-4">{finalServicesSec.heading}</h2>
+        <p class="text-lg text-dark-600">{finalServicesSec.subheading}</p>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Service Card 1: Reinigung -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors">
-            <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">Reinigung</h3>
-          <p class="text-dark-600 mb-4">
-            Professionelle Reinigungsdienstleistungen für Gebäude, Fassaden, Fenster und mehr
-          </p>
-          <a href="/leistungen#reinigung" class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Service Card 2: Grünflächenpflege -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent-600 transition-colors">
-            <svg class="w-6 h-6 text-accent-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">Grünflächenpflege</h3>
-          <p class="text-dark-600 mb-4">
-            Rasenmähen, Heckenschneiden, Gartenarbeiten und Baumpflege
-          </p>
-          <a href="/leistungen#gruenflaeche" class="text-accent-600 font-semibold hover:text-accent-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Service Card 3: Transport -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors">
-            <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">Transport & Entsorgung</h3>
-          <p class="text-dark-600 mb-4">
-            Übersiedlungen, Entrümpelungen und Entsorgungen aller Art
-          </p>
-          <a href="/leistungen#transport" class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Service Card 4: Montagearbeiten -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent-600 transition-colors">
-            <svg class="w-6 h-6 text-accent-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">Montagearbeiten</h3>
-          <p class="text-dark-600 mb-4">
-            Fenster, Türen, Möbel, Sanitär und Elektroinstallationen
-          </p>
-          <a href="/leistungen#montage" class="text-accent-600 font-semibold hover:text-accent-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Service Card 5: Bauarbeiten -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors">
-            <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">Bauarbeiten</h3>
-          <p class="text-dark-600 mb-4">
-            Spachteln, Malen, Putzarbeiten und Abbrucharbeiten
-          </p>
-          <a href="/leistungen#bau" class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Service Card 6: KFZ -->
-        <div class="card group hover:scale-105">
-          <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent-600 transition-colors">
-            <svg class="w-6 h-6 text-accent-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-          </div>
-          <h3 class="heading-4 mb-3">KFZ-Service</h3>
-          <p class="text-dark-600 mb-4">
-            Autoreinigung, Reifenservice, Reparaturen und §57a Vorbereitung
-          </p>
-          <a href="/leistungen#kfz" class="text-accent-600 font-semibold hover:text-accent-700 inline-flex items-center">
-            Mehr erfahren
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </a>
-        </div>
+        {sortedServices.map((service, index) => {
+          const image = service.data.banner?.image || (service.data as any).image;
+          return (
+            <div class="card group hover:scale-105">
+              <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors overflow-hidden">
+                {image ? (
+                  <img src={image} alt={service.data.title} class="w-full h-full object-cover" />
+                ) : (
+                   <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                   </svg>
+                )}
+              </div>
+              <h3 class="heading-4 mb-3">{service.data.title}</h3>
+              <p class="text-dark-600 mb-4 line-clamp-3">
+                {service.data.banner?.description || (service.data as any).description || service.data.description}
+              </p>
+              <a href={`/leistungen/${service.slug}`} class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
+                Mehr erfahren
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -184,16 +122,16 @@ const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-
   <!-- CTA Section -->
   <section class="section bg-gradient-to-r from-primary-600 to-primary-700 text-white">
     <div class="container-custom text-center">
-      <h2 class="heading-2 text-white mb-6">Bereit für Ihr Projekt?</h2>
+      <h2 class="heading-2 text-white mb-6">{finalCTA.heading}</h2>
       <p class="text-xl text-primary-50 mb-8 max-w-2xl mx-auto">
-        Kontaktieren Sie uns noch heute für ein unverbindliches Angebot
+        {finalCTA.content}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl">
-          Kontakt aufnehmen
+        <Button href={finalCTA.primary_btn_link} variant="primary" size="lg" class="shadow-xl">
+          {finalCTA.primary_btn_label}
         </Button>
-        <Button href="tel:+436642528150" variant="secondary" size="lg" class="text-primary-700 border-transparent hover:bg-white shadow-xl">
-          0664 25 28 150
+        <Button href={finalCTA.secondary_btn_link} variant="secondary" size="lg" class="text-primary-700 border-transparent hover:bg-white shadow-xl">
+          {finalCTA.secondary_btn_label}
         </Button>
       </div>
     </div>
