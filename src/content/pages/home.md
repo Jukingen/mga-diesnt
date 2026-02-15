@@ -9,4 +9,8 @@ aboutText: MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team und bietet
   zahlreiche Arbeiten unter einem Dach an. Als Meisterbetrieb für Denkmal-,
   Fassaden- und Gebäudereinigung stehen wir für höchste Qualität und
   Zuverlässigkeit.
+headerBanner:
+  enabled: true
+  image: /assets/uploads/_edited_kitchen-900x300.png
+  variant: light
 ---

@@ -7,7 +7,7 @@ if (!entry) throw new Error('Home entry not found');
 const { title, subtitle, heroHeading, heroText, aboutText, hero_background_image, headerBanner } = entry.data as any;
 
 // Default image if none provided
-const heroBg = hero_background_image || '/images/hero-bg-placeholder.jpg';
+const heroBg = hero_background_image || headerBanner?.image || '/images/hero-bg-placeholder.jpg';
 ---
 
 <BaseLayout 
