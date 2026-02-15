@@ -68,14 +68,78 @@ collections:
         name: "about"
         file: "src/content/pages/about.md"
         fields:
+          # === GRUNDINFORMATIONEN ===
           - {label: "Titel", name: "title", widget: "string"}
-          - {label: "Einleitung", name: "intro", widget: "text"}
-          - {label: "Bild", name: "about_image", widget: "image", required: false}
-          - {label: "Haupttext", name: "content", widget: "markdown"}
+          - {label: "Einleitung", name: "intro", widget: "text", hint: "Untertitel unter der Hauptüberschrift"}
+          - {label: "Hauptbild", name: "about_image", widget: "image", required: false, hint: "Bild am Anfang der Seite"}
+          - {label: "Haupttext", name: "body", widget: "markdown", hint: "Hauptinhalt der Seite"}
+          
+          # === MEISTERBETRIEB INFOBOX ===
+          - label: "Meisterbetrieb Infobox"
+            name: "meisterbetrieb"
+            widget: "object"
+            required: false
+            collapsed: true
+            hint: "Hervorgehobene Box mit Meisterbetrieb-Informationen"
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
+              - {label: "Überschrift", name: "title", widget: "string", default: "Meisterbetrieb"}
+              - {label: "Text", name: "content", widget: "text"}
+          
+          # === UNSERE WERTE ===
+          - label: "Unsere Werte"
+            name: "values"
+            widget: "object"
+            required: false
+            collapsed: true
+            hint: "Werte-Karten mit Titel und Beschreibung"
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Unsere Werte"}
+              - label: "Werte Liste"
+                name: "items"
+                widget: "list"
+                hint: "Einzelne Werte-Karten"
+                fields:
+                  - {label: "Titel", name: "title", widget: "string"}
+                  - {label: "Beschreibung", name: "description", widget: "text"}
+          
+          # === WARUM MIGA ===
+          - label: "Warum MIGA?"
+            name: "why_miga"
+            widget: "object"
+            required: false
+            collapsed: true
+            hint: "Liste mit Gründen für MIGA"
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Warum MIGA Dienstleistungen?"}
+              - label: "Gründe"
+                name: "items"
+                widget: "list"
+                hint: "Einzelne Punkte"
+                field: {label: "Punkt", name: "item", widget: "string"}
+          
+          # === CTA BEREICH ===
+          - label: "CTA Bereich (Unten)"
+            name: "cta_section"
+            widget: "object"
+            required: false
+            collapsed: true
+            hint: "Call-to-Action am Ende der Seite"
+            fields:
+              - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
+              - {label: "Überschrift", name: "heading", widget: "string", default: "Überzeugen Sie sich selbst"}
+              - {label: "Text", name: "content", widget: "text", default: "Kontaktieren Sie uns für ein unverbindliches Beratungsgespräch"}
+              - {label: "Button Text", name: "button_text", widget: "string", default: "Jetzt Kontakt aufnehmen"}
+              - {label: "Button Link", name: "button_link", widget: "string", default: "/kontakt"}
+          
+          # === HEADER BANNER ===
           - label: "Header Banner (Optional)"
             name: "headerBanner"
             widget: "object"
             required: false
+            collapsed: true
             fields:
               - {label: "Aktiviert", name: "enabled", widget: "boolean", default: false}
               - {label: "Text", name: "text", widget: "string", required: false}
@@ -83,6 +147,7 @@ collections:
               - {label: "CTA Link", name: "cta_link", widget: "string", required: false}
               - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
               - {label: "Stil", name: "variant", widget: "select", options: ["dark", "light"], default: "dark"}
+          
           
       - label: "Kontakt"
         name: "contact"
@@ -148,28 +213,46 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
-      - {label: "Titel", name: "title", widget: "string"}
-      - label: "Banner"
+      # === GRUNDINFORMATIONEN ===
+      - {label: "Titel", name: "title", widget: "string", hint: "Name der Dienstleistung (z.B. 'Reinigung')"}
+      - {label: "Reihenfolge", name: "order", widget: "number", default: 99, hint: "Sortierung auf der Übersichtsseite (kleinere Zahlen = weiter oben)"}
+      
+      # === SEITENBANNER ===
+      - label: "Seitenbanner (Optional)"
         name: "banner"
         widget: "object"
         required: false
+        collapsed: true
+        hint: "Banner für die Detail-Seite dieser Leistung"
         fields:
-          - {label: "Bild", name: "image", widget: "image", required: false}
-          - {label: "Titel (Optional)", name: "title", widget: "string", required: false}
-          - {label: "Beschreibung (Optional)", name: "description", widget: "text", required: false}
-      - {label: "Inhalt", name: "body", widget: "markdown"}
+          - {label: "Hintergrundbild", name: "image", widget: "image", required: false}
+          - {label: "Banner Titel (Optional)", name: "title", widget: "string", required: false, hint: "Falls leer, wird der Haupttitel verwendet"}
+          - {label: "Banner Beschreibung (Optional)", name: "description", widget: "text", required: false}
+      
+      # === LEISTUNGSDETAILS ===
+      - {label: "Kurzbeschreibung", name: "description", widget: "text", hint: "Wird auf der Übersichtsseite angezeigt"}
+      
+      - label: "Leistungen Liste"
+        name: "items"
+        widget: "list"
+        required: false
+        hint: "Detaillierte Auflistung der einzelnen Leistungen in diesem Bereich"
+        field: {label: "Leistung", name: "item", widget: "string"}
+      
+      - {label: "Detaillierter Inhalt (Markdown)", name: "body", widget: "markdown", required: false, hint: "Zusätzlicher Text für die Detail-Seite"}
+      
+      # === SEO ===
       - label: "SEO (Optional)"
         name: "seo"
         widget: "object"
         required: false
+        collapsed: true
         fields:
           - {label: "SEO Titel", name: "title", widget: "string", required: false}
           - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
-      - {label: "Reihenfolge", name: "order", widget: "number", default: 99}
-      # Deprecated fields (kept for data safety, can be removed later if not needed)
+      
+      # === DEPRECATED (für Datenkompatibilität) ===
       - {label: "Altes Bild (Deprecated)", name: "image", widget: "image", required: false, hidden: true}
-      - {label: "Alte Beschreibung (Deprecated)", name: "description", widget: "text", required: false, hidden: true}
-      - {label: "Alte Leistungen Liste (Deprecated)", name: "items", widget: "list", required: false, hidden: true}
 
   - name: "settings"
     label: "Einstellungen"

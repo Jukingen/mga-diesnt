@@ -5,8 +5,25 @@ import Button from '../components/Button.astro';
 
 const entry = await getEntry('pages', 'about');
 if (!entry) throw new Error('About entry not found');
-const { title, intro, content, about_image, headerBanner } = entry.data as any;
+
+const { 
+  title, 
+  intro, 
+  about_image, 
+  headerBanner,
+  meisterbetrieb,
+  values,
+  why_miga,
+  cta_section
+} = entry.data as any;
+
 const { Content } = await entry.render();
+
+// Fallbacks
+const finalMeisterbetrieb = meisterbetrieb || { enabled: false };
+const finalValues = values || { enabled: false, items: [] };
+const finalWhyMiga = why_miga || { enabled: false, items: [] };
+const finalCTA = cta_section || { enabled: false };
 ---
 
 <BaseLayout 
@@ -14,10 +31,22 @@ const { Content } = await entry.render();
   description={intro || "Erfahren Sie mehr über MIGA Dienstleistungen GmbH"}
   headerBanner={headerBanner}
 >
-  <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
-    <div class="container-custom">
+  <!-- Header -->
+  <section class="relative bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16 overflow-hidden">
+    {headerBanner?.image && (
+      <div class="absolute inset-0 z-0">
+        <img 
+          src={headerBanner.image} 
+          alt={title} 
+          class="w-full h-full object-cover opacity-90" 
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20"></div>
+      </div>
+    )}
+    
+    <div class="container-custom relative z-10 drop-shadow-lg">
       <h1 class="heading-1 text-white mb-4">{title}</h1>
-      <p class="text-xl text-primary-50">{intro}</p>
+      <p class="text-xl text-white font-medium">{intro}</p>
     </div>
   </section>
 
@@ -36,95 +65,62 @@ const { Content } = await entry.render();
           
           <Content />
           
-          <div class="bg-primary-50 border-l-4 border-primary-600 p-6 my-8">
-            <h3 class="heading-4 mb-3">Meisterbetrieb</h3>
-            <p class="text-dark-700">
-              Als <strong>Denkmal-, Fassaden- und Gebäudereinigungsmeister</strong> unter der Leitung 
-              von Geschäftsführer <strong>Miodrag Jovanovic</strong> garantieren wir höchste Qualität 
-              und Fachkompetenz bei allen unseren Dienstleistungen.
-            </p>
-          </div>
-
-          <h3 class="heading-4 mb-4 mt-8">Unsere Werte</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
-            <div class="card">
-              <h4 class="font-semibold text-lg mb-2 text-primary-600">Zuverlässigkeit</h4>
-              <p class="text-dark-600">
-                Pünktlichkeit und Verlässlichkeit sind für uns selbstverständlich. 
-                Wir halten unsere Termine ein und arbeiten gewissenhaft.
-              </p>
+          {/* Meisterbetrieb Infobox */}
+          {finalMeisterbetrieb.enabled && (
+            <div class="bg-primary-50 border-l-4 border-primary-600 p-6 my-8">
+              <h3 class="heading-4 mb-3">{finalMeisterbetrieb.title || 'Meisterbetrieb'}</h3>
+              <p class="text-dark-700" set:html={finalMeisterbetrieb.content}></p>
             </div>
+          )}
 
-            <div class="card">
-              <h4 class="font-semibold text-lg mb-2 text-primary-600">Fachkompetenz</h4>
-              <p class="text-dark-600">
-                Als Meisterbetrieb verfügen wir über das nötige Know-how und die 
-                Erfahrung für professionelle Ergebnisse.
-              </p>
-            </div>
+          {/* Unsere Werte */}
+          {finalValues.enabled && finalValues.items && finalValues.items.length > 0 && (
+            <>
+              <h3 class="heading-4 mb-4 mt-8">{finalValues.heading || 'Unsere Werte'}</h3>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                {finalValues.items.map((value: any) => (
+                  <div class="card">
+                    <h4 class="font-semibold text-lg mb-2 text-primary-600">{value.title}</h4>
+                    <p class="text-dark-600">{value.description}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
-            <div class="card">
-              <h4 class="font-semibold text-lg mb-2 text-primary-600">Persönlicher Service</h4>
-              <p class="text-dark-600">
-                Wir nehmen uns Zeit für Ihre Anliegen und bieten individuelle 
-                Lösungen für Ihre Bedürfnisse.
-              </p>
-            </div>
-
-            <div class="card">
-              <h4 class="font-semibold text-lg mb-2 text-primary-600">Vielseitigkeit</h4>
-              <p class="text-dark-600">
-                Von Reinigung über Gartenarbeit bis hin zu KFZ-Service – 
-                wir sind Ihr Ansprechpartner für viele Bereiche.
-              </p>
-            </div>
-          </div>
-
-          <h3 class="heading-4 mb-4 mt-8">Warum MIGA Dienstleistungen?</h3>
-          
-          <ul class="space-y-3 text-dark-700 mb-8">
-            <li class="flex items-start">
-              <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Alle Dienstleistungen aus einer Hand</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Meisterbetrieb mit langjähriger Erfahrung</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Faire Preise und transparente Angebote</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Schnelle und flexible Terminvereinbarung</span>
-            </li>
-            <li class="flex items-start">
-              <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Qualität und Kundenzufriedenheit an erster Stelle</span>
-            </li>
-          </ul>
+          {/* Warum MIGA? */}
+          {finalWhyMiga.enabled && finalWhyMiga.items && finalWhyMiga.items.length > 0 && (
+            <>
+              <h3 class="heading-4 mb-4 mt-8">{finalWhyMiga.heading || 'Warum MIGA Dienstleistungen?'}</h3>
+              
+              <ul class="space-y-3 text-dark-700 mb-8">
+                {finalWhyMiga.items.map((item: string) => (
+                  <li class="flex items-start">
+                    <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-    <div class="container-custom text-center">
-      <h2 class="heading-2 text-white mb-6">Überzeugen Sie sich selbst</h2>
-      <p class="text-xl text-primary-50 mb-8">Kontaktieren Sie uns für ein unverbindliches Beratungsgespräch</p>
-      <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl">Jetzt Kontakt aufnehmen</Button>
-    </div>
-  </section>
+  {/* CTA Section */}
+  {finalCTA.enabled && (
+    <section class="section bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+      <div class="container-custom text-center">
+        <h2 class="heading-2 text-white mb-6">{finalCTA.heading || 'Überzeugen Sie sich selbst'}</h2>
+        <p class="text-xl text-primary-50 mb-8">{finalCTA.content || 'Kontaktieren Sie uns für ein unverbindliches Beratungsgespräch'}</p>
+        <Button href={finalCTA.button_link || '/kontakt'} variant="primary" size="lg" class="shadow-xl">
+          {finalCTA.button_text || 'Jetzt Kontakt aufnehmen'}
+        </Button>
+      </div>
+    </section>
+  )}
 </BaseLayout>
