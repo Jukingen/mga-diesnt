@@ -15,4 +15,6 @@ seo:
   description: "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege,
     Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten, Sanitär und
     KFZ-Service in Graz."
+privacy: "11111111111"
+impressum: "222222222222222"
 ---

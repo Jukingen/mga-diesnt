@@ -139,6 +139,9 @@ collections:
 
 
 
+
+
+
   - name: "services"
     label: "Leistungen"
     folder: "src/content/services"
@@ -195,5 +198,33 @@ collections:
               - {label: "Untertitel (Optional)", name: "optional_subtitle", widget: "string", required: false}
               - {label: "Header CTA Text", name: "header_cta_label", widget: "string"}
               - {label: "Header CTA Link", name: "header_cta_link", widget: "string"}
+
+      - label: "Datenschutzerklärung"
+        name: "privacy"
+        file: "src/content/pages/datenschutz.md"
+        fields:
+          - {label: "Titel", name: "title", widget: "string"}
+          - {label: "Inhalt", name: "body", widget: "markdown"}
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "SEO Titel", name: "title", widget: "string", required: false}
+              - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
+
+      - label: "Impressum"
+        name: "impressum"
+        file: "src/content/pages/impressum.md"
+        fields:
+          - {label: "Titel", name: "title", widget: "string"}
+          - {label: "Inhalt", name: "body", widget: "markdown"}
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "SEO Titel", name: "title", widget: "string", required: false}
+              - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
 
 
