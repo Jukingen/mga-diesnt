@@ -27,11 +27,20 @@ const servicesCollection = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
-        description: z.string(),
-        items: z.array(z.string()),
-        order: z.number().optional(),
-        // Image as string path since it's in public/
+        banner: z.object({
+            image: z.string().optional(),
+            title: z.string().optional(),
+            description: z.string().optional(),
+        }).optional(),
+        seo: z.object({
+            title: z.string().optional(),
+            description: z.string().optional(),
+        }).optional(),
+        order: z.number().default(99),
+        // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),
+        description: z.string().optional(),
+        items: z.array(z.string()).optional(),
     }),
 });
 

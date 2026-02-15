@@ -12,5 +12,5 @@ aboutText: MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team und bietet
 headerBanner:
   enabled: true
   image: /assets/uploads/_edited_kitchen-900x300.png
-  variant: light
+  variant: dark
 ---

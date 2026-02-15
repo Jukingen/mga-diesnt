@@ -6,27 +6,71 @@ import Button from '../components/Button.astro';
 const services = await getCollection('services');
 const sortedServices = services.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 
-const entry = await getEntry('pages', 'home'); // Reusing home page hero settings or could create a specific services page
-if (!entry) throw new Error('Home entry not found');
-// Or if you want a dedicated services content entry, you should create one.
-const { title: homeTitle, headerBanner } = entry.data as any; // Extract headerBanner from home or use global
-// Let's assume we use fixed header for now as there is no specific 'services' page content yet in CMS config for "pages" collection except generic ones.
-// Based on config.yml, there is NO 'services' page in 'pages' collection. I will check.
-// There is no specific page entry for 'leistungen'. I will use default or empty headerBanner unless I add it.
-// Wait, I can pass undefined headerBanner and it will use global.
+// 1. Fetch data from the 'services' page content (for banner/header)
+const entry = await getEntry('pages', 'services');
+
+// 2. Defensive Coding: Extract data with fallbacks
+const { title: pageTitle, headerBanner, seo, cta_section } = entry?.data || {};
+
+// 3. Define Fallback Constants
+const DEFAULT_BANNER_IMAGE = '/assets/uploads/default-service-banner.jpg'; // Ensure this exists or use a generic placeholder
+const FALLBACK_TITLE = 'Unsere Leistungen';
+const FALLBACK_BANNER_TEXT = 'Professionelle Dienstleistungen für jeden Bedarf';
+const FALLBACK_CTA = {
+  heading: 'Interesse an unseren Leistungen?',
+  content: 'Kontaktieren Sie uns für ein unverbindliches Angebot',
+  button_text: 'Jetzt Kontakt aufnehmen',
+  button_link: '/kontakt'
+};
+
+// 4. Resolve final values
+// User wants "Titel" from CMS (pageTitle) to be the main H1. headerBanner.text will be the subtitle.
+const finalTitle = pageTitle || FALLBACK_TITLE;
+const finalSubtitle = headerBanner?.text || FALLBACK_BANNER_TEXT;
+const finalImage = headerBanner?.image || DEFAULT_BANNER_IMAGE;
+const isBannerEnabled = headerBanner?.enabled !== false; // Default to true if not specified
+const bannerVariant = headerBanner?.variant || 'dark';
+
+const finalCTA = {
+  heading: cta_section?.heading || FALLBACK_CTA.heading,
+  content: cta_section?.content || FALLBACK_CTA.content,
+  button_text: cta_section?.button_text || FALLBACK_CTA.button_text,
+  button_link: cta_section?.button_link || FALLBACK_CTA.button_link
+};
+
+// 5. Build the banner object for BaseLayout
+const computedHeaderBanner = {
+  enabled: isBannerEnabled,
+  text: finalTitle,
+  image: finalImage,
+  variant: bannerVariant,
+  // cta_label and cta_link are not in the new schema yet, so omitting or adding if needed
+};
 
 ---
 
 <BaseLayout 
-  title="Unsere Leistungen - MIGA Dienstleistungen GmbH"
-  description="Professionelle Dienstleistungen: Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten, Sanitär und KFZ-Service in Graz."
-  headerBanner={headerBanner}
+  title={seo?.title || "Unsere Leistungen - MIGA Dienstleistungen GmbH"}
+  description={seo?.description || "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten, Sanitär und KFZ-Service in Graz."}
+  headerBanner={computedHeaderBanner}
 >
   <!-- Header -->
-  <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
-    <div class="container-custom">
-      <h1 class="heading-1 text-white mb-4">Unsere Leistungen</h1>
-      <p class="text-xl text-primary-50">Professionelle Dienstleistungen für jeden Bedarf</p>
+  <!-- Header -->
+  <section class="relative bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16 overflow-hidden">
+    {finalImage && finalImage !== DEFAULT_BANNER_IMAGE && (
+      <div class="absolute inset-0 z-0">
+        <img 
+          src={finalImage} 
+          alt={finalTitle} 
+          class="w-full h-full object-cover opacity-20 mix-blend-overlay" 
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-primary-800/60"></div>
+      </div>
+    )}
+    
+    <div class="container-custom relative z-10">
+      <h1 class="heading-1 text-white mb-4">{finalTitle}</h1>
+      <p class="text-xl text-primary-50">{finalSubtitle}</p>
     </div>
   </section>
 
@@ -72,9 +116,9 @@ const { title: homeTitle, headerBanner } = entry.data as any; // Extract headerB
   <!-- CTA -->
   <section class="section bg-gradient-to-r from-primary-600 to-primary-700 text-white">
     <div class="container-custom text-center">
-      <h2 class="heading-2 text-white mb-6">Interesse an unseren Leistungen?</h2>
-      <p class="text-xl text-primary-50 mb-8">Kontaktieren Sie uns für ein unverbindliches Angebot</p>
-      <Button href="/kontakt" variant="primary" size="lg" class="shadow-xl">Jetzt Kontakt aufnehmen</Button>
+      <h2 class="heading-2 text-white mb-6">{finalCTA.heading}</h2>
+      <p class="text-xl text-primary-50 mb-8">{finalCTA.content}</p>
+      <Button href={finalCTA.button_link} variant="primary" size="lg" class="shadow-xl">{finalCTA.button_text}</Button>
     </div>
   </section>
 </BaseLayout>
