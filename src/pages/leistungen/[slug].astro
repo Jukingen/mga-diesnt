@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, description, items, image } = entry.data;
+---
+
+<BaseLayout title={`${title} - MIGA Dienstleistungen GmbH`} description={description}>
+  <!-- Header -->
+  <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
+    <div class="container-custom">
+      <h1 class="heading-1 text-white mb-4">{title}</h1>
+      <p class="text-xl text-primary-50">{description}</p>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="container-custom">
+      <div class="flex flex-col md:flex-row gap-8">
+        <div class="md:w-2/3">
+          {image && (
+            <img 
+              src={image} 
+              alt={title} 
+              class="w-full h-64 object-cover rounded-lg shadow-md mb-8"
+              loading="lazy"
+            />
+          )}
+          
+          <h2 class="heading-3 mb-6 text-primary-600">Unsere Leistungen im Bereich {title}</h2>
+          <ul class="grid grid-cols-1 gap-3 text-dark-700 mb-8">
+            {items.map(item => (
+              <li class="flex items-start">
+                <span class="text-primary-600 mr-2 mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+                <span class="text-lg">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+            <h3 class="text-xl font-bold mb-4">Haben Sie Fragen zu diesem Bereich?</h3>
+            <p class="mb-6">Wir beraten Sie gerne persönlich zu unseren Leistungen im Bereich {title}.</p>
+            <Button href="/kontakt" variant="primary">Jetzt anfragen</Button>
+          </div>
+        </div>
+
+        <aside class="md:w-1/3">
+          <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 sticky top-24">
+            <h3 class="text-lg font-bold mb-4 border-b pb-2">Alle Leistungen</h3>
+            <nav class="flex flex-col space-y-2">
+              <a href="/leistungen/reinigung" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Reinigung' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Reinigung</a>
+              <a href="/leistungen/gruenflaeche" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Grünflächenpflege' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Grünflächenpflege</a>
+              <a href="/leistungen/winterdienst" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Winterdienst' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Winterdienst</a>
+              <a href="/leistungen/transport" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Transport' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Transport</a>
+              <a href="/leistungen/tischler" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Tischlerarbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Tischlerarbeiten</a>
+              <a href="/leistungen/montage" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Montagearbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Montagearbeiten</a>
+              <a href="/leistungen/bau" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Bauarbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Bauarbeiten</a>
+              <a href="/leistungen/sanitaer" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Sanitärbereich' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Sanitärbereich</a>
+              <a href="/leistungen/kfz" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Kfz Fahrzeuge' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Kfz Fahrzeuge</a>
+              <div class="pt-4 border-t mt-4">
+                 <a href="/leistungen" class="text-sm text-primary-600 hover:text-primary-700 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Zur Übersicht
+                 </a>
+              </div>
+            </nav>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

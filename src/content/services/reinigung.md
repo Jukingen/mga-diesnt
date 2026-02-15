@@ -1,9 +1,9 @@
 ---
 title: "Reinigung"
-description: "Wir bieten professionelle Reinigungsdienstleistungen für Gebäude, Fassaden, Fenster und mehr an."
+description: "Professionelle Reinigungsdienstleistungen für Gebäude, Büros und Privathaushalte."
 order: 1
 items:
-  - "Stiegenhäuserreinigung"
+  - "Stiegenhäuserreinigung und rund ums Haus"
   - "Bauendreinigung"
   - "Wohnungsreinigung" 
   - "Fassadenreinigung"
@@ -11,13 +11,13 @@ items:
   - "Jalousiereinigung"
   - "Glasdachreinigung"
   - "Glasfassadereinigung"
-  - "Grundreinigung verschiedener Böden"
+  - "Grundreinigung von verschiedenen Böden (Linoleum, PVC, Gumminoppen, Fliesenboden, Teppichboden, Parkettboden, Laminatboden, Epoxydharzboden, Feinsteinzeug und Fliesenboden)"
   - "Fliesenfugenreinigung"
   - "Dachziegelreinigung"
   - "Waschbetonplattenreinigung"
-  - "Kleinküchereinigung"
-  - "Großküchereinigung"
+  - "Kleinküchenreinigung"
+  - "Großküchenreinigung"
   - "Tiefgaragenreinigung"
   - "Tatortreinigung"
-  - "Weitere Reinigungen auf Anfrage"
+  - "Weitere Reinigungen auf Anfrage!"
 ---

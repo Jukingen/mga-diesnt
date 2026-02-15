@@ -1,14 +1,10 @@
 ---
-title: "Transport & Entsorgung"
-description: "Übersiedlungen, Entrümpelungen und Entsorgungen aller Art."
-order: 3
+title: "Transport"
+description: "Fachgerechte Entsorgungen, Entrümpelungen und Überstellungen."
+order: 4
 items:
-  - "Privatumzüge"
-  - "Firmenübersiedlungen"
-  - "Möbeltransport"
-  - "Entrümpelung von Wohnungen"
-  - "Kellerräumung"
-  - "Dachbodenräumung"
-  - "Sperrmüllentsorgung"
-  - "Fachgerechte Mülltrennung und Entsorgung"
+  - "Entsorgungen aller Art"
+  - "Entrümpelungen"
+  - "Übersiedlungen"
+  - "Kfz Überstellungen"
 ---

@@ -1,14 +1,13 @@
 ---
-title: "KFZ-Service"
-description: "Autoreinigung, Reifenservice, Reparaturen und §57a Vorbereitung."
-order: 6
+title: "Kfz Fahrzeuge"
+description: "Rundum-Service für Ihr Fahrzeug: Reinigung, Reparatur und Überprüfung."
+order: 9
 items:
-  - "Professionelle Innen- und Außenreinigung"
-  - "Reifenwechsel und Wuchten"
-  - "Ölwechsel und kleine Servicearbeiten"
-  - "Bremsencheck und -tausch"
-  - "§57a (Pickerl) Vorbereitung"
-  - "Politur und Lackaufbereitung"
-  - "Unterbodenwäsche"
-  - "Kleine Reparaturen"
+  - "Autoreinigung innen und außen"
+  - "Auto polieren"
+  - "Reifenservice"
+  - "Fahrzeug Diagnose auch vor Ort"
+  - "Autoreparatur und Vorbereitung für § 57a"
+  - "Schweißarbeiten"
+  - "Fahrzeug Abholung und Zustellung (Sie rufen uns an, wir holen Ihr Fahrzeug ab, führen die notwendige Reparatur durch und bringen es wieder zu Ihnen)"
 ---

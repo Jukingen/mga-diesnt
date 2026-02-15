@@ -1,14 +1,13 @@
 ---
 title: "Grünflächenpflege"
-description: "Rasenmähen, Heckenschneiden, Gartenarbeiten und Baumpflege."
+description: "Umfassende Garten- und Grünflächenbetreuung für ein gepflegtes Erscheinungsbild."
 order: 2
 items:
   - "Rasenmähen"
-  - "Vertikutieren"
-  - "Heckenschnitt"
-  - "Baumschnitt"
-  - "Laubentfernung"
-  - "Unkrautentfernung"
-  - "Neubepflanzung"
-  - "Gartenpflege im Abo"
+  - "Hochgrasmähen"
+  - "Heckenschneiden"
+  - "Laubrechen"
+  - "Bäume stutzen"
+  - "Bäume umschneiden"
+  - "Rund um Gartenarbeiten"
 ---

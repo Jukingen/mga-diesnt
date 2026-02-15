@@ -1,14 +1,18 @@
 ---
 title: "Montagearbeiten"
-description: "Fenster, Türen, Möbel, Sanitär und Elektroinstallationen."
-order: 4
+description: "Fachgerechte Montage von Möbeln, Fenstern, Türen und Installationen."
+order: 6
 items:
-  - "Möbelmontage und -demontage"
-  - "Küchenmontage"
-  - "Fenstermontage"
-  - "Türmontage"
-  - "Lampenmontage"
-  - "Vorhangstangen und Bilder anbringen"
-  - "Sanitäre Kleininstallationen"
-  - "Regalmontage"
+  - "Fenster- und Türmontage"
+  - "Fenstergriff- und Türgriff-Montage"
+  - "Montage von Beleuchtungskörper"
+  - "Montage von Lichtschalter und Steckdosen"
+  - "Duschwandmontage"
+  - "Toilettemontage"
+  - "Warmwasserboiler Montage"
+  - "Wasserhahn Montage"
+  - "Küchenblock Montage"
+  - "Küchenblock verfliesen"
+  - "Möbelmontage"
+  - "usw."
 ---

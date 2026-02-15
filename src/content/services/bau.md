@@ -1,15 +1,13 @@
 ---
-title: Bauarbeiten
-image: ""
-description: Spachteln, Malen, Putzarbeiten und Abbrucharbeiten.
+title: "Bauarbeiten"
+description: "Zuverlässige Durchführung von Malerei-, Spachtel- und Abbrucharbeiten."
+order: 7
 items:
-  - Malerarbeiten (Innen & Außen)
-  - Spachtelarbeiten
-  - Gipskartonwände
-  - Trockenbau
-  - Rissesanierung
-  - Kleine Putzarbeiten
-  - Bodenverlegung (Laminat, Parkett)
-  - Abbrucharbeiten & Entsorgung des Bauschutts
-order: 5
+  - "Spachteln"
+  - "Malen"
+  - "Grobputz auftragen"
+  - "Feinputz auftragen"
+  - "Gipswände aufstellen"
+  - "Abbrucharbeiten"
+  - "usw."
 ---
