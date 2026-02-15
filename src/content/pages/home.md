@@ -1,9 +1,9 @@
 ---
-title: MIGA Dienstleistungen GmbH
-subtitle: Ihr zuverlässiger Partner in Graz
-heroHeading: Ihr zuverlässiger Allround-Dienstleister in Graz
+title: MIGA Dienstleistungen GmbH 1
+subtitle: "Ihr zuverlässiger Partner in Graz 2 "
+heroHeading: Ihr zuverlässiger Allround-Dienstleister in Graz 3
 heroText: Viele Dienstleistungen unter einem Dach – professionell, zuverlässig
-  und kompetent
+  und kompetent 4
 hero_background_image: ""
 aboutText: MIGA Dienstleistungen GmbH ist Ihr Allrounder-Team und bietet
   zahlreiche Arbeiten unter einem Dach an. Als Meisterbetrieb für Denkmal-,

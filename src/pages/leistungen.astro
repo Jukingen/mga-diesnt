@@ -62,15 +62,15 @@ const computedHeaderBanner = {
         <img 
           src={finalImage} 
           alt={finalTitle} 
-          class="w-full h-full object-cover opacity-20 mix-blend-overlay" 
+          class="w-full h-full object-cover opacity-90" 
         />
-        <div class="absolute inset-0 bg-gradient-to-r from-primary-900/80 to-primary-800/60"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20"></div>
       </div>
     )}
     
-    <div class="container-custom relative z-10">
+    <div class="container-custom relative z-10 drop-shadow-lg">
       <h1 class="heading-1 text-white mb-4">{finalTitle}</h1>
-      <p class="text-xl text-primary-50">{finalSubtitle}</p>
+      <p class="text-xl text-white font-medium">{finalSubtitle}</p>
     </div>
   </section>
 
@@ -92,8 +92,7 @@ const computedHeaderBanner = {
                 </div>
               )}
               <div class="p-6 flex-grow flex flex-col">
-                <h2 class="heading-4 mb-3 text-primary-600 group-hover:text-primary-700 transition-colors flex items-center">
-                    <span class="mr-2 text-primary-400 font-light text-2xl">0{index + 1}</span>
+                <h2 class="heading-4 mb-3 text-primary-600 group-hover:text-primary-700 transition-colors">
                     {service.data.title}
                 </h2>
                 <p class="mb-4 text-dark-600 line-clamp-3">{service.data.description}</p>

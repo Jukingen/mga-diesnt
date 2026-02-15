@@ -1,9 +1,9 @@
 ---
-title: Leistungen1
+title: Leistungen
 headerBanner:
   enabled: true
-  text: Professionelle Dienstleistungen für jeden Bedarf2
-  image: ""
+  text: Professionelle Dienstleistungen für jeden Bedarf
+  image: /assets/uploads/_edited_kitchen-900x300.png
   variant: dark
 cta_section:
   heading: Interesse an unseren Leistungen?
