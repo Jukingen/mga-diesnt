@@ -6,26 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
 
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+
+  <!-- CORS fix -->
   <script src="/.netlify/identity/v1/netlify-identity-widget.js"></script>
 
   <script>
     if (location.hash.startsWith("#/")) {
       location.replace(location.href.replace("#/", "#"));
-      return;
-    }
-
-    const hasToken =
-      location.hash.includes("recovery_token=") ||
-      location.hash.includes("invite_token=");
-
-    if (hasToken && !location.pathname.startsWith("/admin")) {
-      location.replace("/admin/" + location.hash);
-      return;
     }
 
     window.addEventListener("load", () => {
       if (!window.netlifyIdentity) return;
-
       window.netlifyIdentity.init();
 
       if (location.hash.includes("invite_token=")) window.netlifyIdentity.open();
