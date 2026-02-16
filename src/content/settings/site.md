@@ -11,7 +11,7 @@ header:
   header_cta_label: Angebot anfordern
   header_cta_link: /kontakt
 company_info:
-  street: Josef–Pock–Strasse 66-222
+  street: Josef–Pock–Strasse 66
   ceo_title: Denkmal-, Fassaden- und Gebäudereinigungsmeister
   email_form: a.terziev@live.at
   phone_link: "+436642528150"
