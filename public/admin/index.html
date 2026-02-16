@@ -5,22 +5,32 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <script src="/.netlify/identity/v1/netlify-identity-widget.js"></script>
+
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
+    // recovery link root'a düşerse admin'e taşı
+    if (location.hash.includes("recovery_token=") && !location.pathname.startsWith("/admin")) {
+      location.replace("/admin/" + location.hash);
     }
+
+    window.addEventListener("load", () => {
+      if (!window.netlifyIdentity) return;
+
+      window.netlifyIdentity.init();
+
+      if (location.hash.includes("recovery_token=")) {
+        window.netlifyIdentity.open("recover");
+      }
+
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin/";
+      });
+    });
   </script>
 </head>
 
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 
