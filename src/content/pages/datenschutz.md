@@ -12,13 +12,13 @@ Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren 
 
 ### Datenerfassung auf dieser Website
 
-**Wer ist verantwortlich für die Datenerfassung auf dieser Website?**
+**Wer ist verantwortlich für die Datenerfassung auf dieser Website?**  
 Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
 
-**Wie erfassen wir Ihre Daten?**
+**Wie erfassen wir Ihre Daten?**  
 Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular eingeben.
 
-**Wofür nutzen wir Ihre Daten?**
+**Wofür nutzen wir Ihre Daten?**  
 Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gewährleisten. Andere Daten können zur Analyse Ihres Nutzerverhaltens verwendet werden.
 
 ## 2. Hosting
@@ -37,13 +37,13 @@ Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ern
 
 Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:
 
-MIGA Dienstleistungen GmbH
-Josef–Pock–Strasse 66
-8051 Graz
+{{COMPANY_NAME}}  
+{{COMPANY_STREET}}  
+{{COMPANY_CITY}}  
 Österreich
 
-Mobil: 0664 25 28 150
-E-Mail: miga2017@gmx.at
+Mobil: {{COMPANY_PHONE}}  
+E-Mail: {{COMPANY_EMAIL}}
 
 ### Speicherdauer
 

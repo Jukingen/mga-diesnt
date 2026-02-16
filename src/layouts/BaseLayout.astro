@@ -9,7 +9,12 @@ import { getEntry } from 'astro:content';
 // Fetch global settings
 const siteSettings = await getEntry('settings', 'site');
 if (!siteSettings) throw new Error('Site settings not found');
-const { top_banner: globalBanner } = siteSettings.data as any;
+const { top_banner: globalBanner, company_info } = siteSettings.data as any;
+
+// Validate company_info exists
+if (!company_info) {
+  throw new Error('Company info not found in site settings. Please check src/content/settings/site.md');
+}
 
 // Determine which banner to show
 // Priority: Page Banner > Global Banner > None
@@ -17,18 +22,26 @@ let activeBanner = null;
 
 if (pageBanner && pageBanner.enabled) {
   // Use page-specific banner
-  // Merge with global contact info to keep it consistent if not overridden
   activeBanner = {
-    ...globalBanner, // Default contact info
     enabled: true,
     text: pageBanner.text || globalBanner.text,
     cta_label: pageBanner.cta_label || globalBanner.cta_label,
     cta_link: pageBanner.cta_link || globalBanner.cta_link,
-    style_variant: pageBanner.variant || globalBanner.style_variant
+    style_variant: pageBanner.variant || globalBanner.style_variant,
+    // Contact info always comes from company_info
+    phone: company_info.phone,
+    email: company_info.email_display,
+    address_short: `${company_info.street}, ${company_info.city}`,
   };
 } else {
-  // Fallback to global banner
-  activeBanner = globalBanner;
+  // Fallback to global banner with company_info contact details
+  activeBanner = {
+    ...globalBanner,
+    // Contact info always comes from company_info
+    phone: company_info.phone,
+    email: company_info.email_display,
+    address_short: `${company_info.street}, ${company_info.city}`,
+  };
 }
 ---
 
@@ -90,7 +103,7 @@ if (pageBanner && pageBanner.enabled) {
         <div class="container-custom py-12">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 class="text-xl font-bold mb-4">MIGA Dienstleistungen GmbH</h3>
+              <h3 class="text-xl font-bold mb-4">{company_info.company_name}</h3>
               <p class="text-dark-300 text-sm">
                 Ihr zuverlässiger Allround-Dienstleister in Graz
               </p>
@@ -99,16 +112,16 @@ if (pageBanner && pageBanner.enabled) {
             <div>
               <h4 class="font-semibold mb-4">Kontakt</h4>
               <ul class="space-y-2 text-sm text-dark-300">
-                <li>Josef–Pock–Strasse 66</li>
-                <li>8051 Graz</li>
+                <li>{company_info.street}</li>
+                <li>{company_info.city}</li>
                 <li class="pt-2">
-                  <a href="tel:+436642528150" class="hover:text-primary-400 transition-colors">
-                    Mobil: 0664 25 28 150
+                  <a href={`tel:${company_info.phone_link}`} class="hover:text-primary-400 transition-colors">
+                    Mobil: {company_info.phone}
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:miga2017@gmx.at" class="hover:text-primary-400 transition-colors">
-                    miga2017@gmx.at
+                  <a href={`mailto:${company_info.email_display}`} class="hover:text-primary-400 transition-colors">
+                    {company_info.email_display}
                   </a>
                 </li>
               </ul>
@@ -128,7 +141,7 @@ if (pageBanner && pageBanner.enabled) {
           </div>
           
           <div class="border-t border-dark-700 mt-8 pt-8 text-center text-sm text-dark-400">
-            <p>&copy; {new Date().getFullYear()} MIGA Dienstleistungen GmbH. Alle Rechte vorbehalten.</p>
+            <p>&copy; {new Date().getFullYear()} {company_info.company_name}. Alle Rechte vorbehalten.</p>
           </div>
         </div>
       </footer>

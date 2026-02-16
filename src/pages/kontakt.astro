@@ -1,6 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import { getEntry } from 'astro:content';
+
+// Fetch site settings for company info
+const siteSettings = await getEntry('settings', 'site');
+if (!siteSettings) throw new Error('Site settings not found');
+const { company_info } = siteSettings.data as any;
+
+// Validate company_info exists
+if (!company_info) {
+  throw new Error('Company info not found in site settings. Please check src/content/settings/site.md');
+}
 ---
 
 <BaseLayout 
@@ -20,7 +31,7 @@ import Button from '../components/Button.astro';
         <!-- Contact Form -->
         <div>
           <h2 class="heading-3 mb-6">Kontaktformular</h2>
-          <form action="https://formsubmit.co/a.terziev@live.at" method="POST" class="space-y-6">
+          <form action={`https://formsubmit.co/${company_info.email_form}`} method="POST" class="space-y-6">
             <!-- FormSubmit Configuration -->
             <input type="hidden" name="_subject" value="Neue Anfrage über MIGA Website">
             <input type="hidden" name="_captcha" value="false">
@@ -89,8 +100,8 @@ import Button from '../components/Button.astro';
                 Adresse
               </h3>
               <p class="text-dark-700">
-                Josef–Pock–Strasse 66<br />
-                8051 Graz
+                {company_info.street}<br />
+                {company_info.city}
               </p>
             </div>
 
@@ -102,8 +113,8 @@ import Button from '../components/Button.astro';
                 Telefon
               </h3>
               <p class="text-dark-700">
-                <a href="tel:+436642528150" class="hover:text-primary-600 transition-colors">
-                  Mobil: 0664 25 28 150
+                <a href={`tel:${company_info.phone_link}`} class="hover:text-primary-600 transition-colors">
+                  Mobil: {company_info.phone}
                 </a>
               </p>
             </div>
@@ -116,8 +127,8 @@ import Button from '../components/Button.astro';
                 E-Mail
               </h3>
               <p class="text-dark-700">
-                <a href="mailto:miga2017@gmx.at" class="hover:text-primary-600 transition-colors">
-                  miga2017@gmx.at
+                <a href={`mailto:${company_info.email_display}`} class="hover:text-primary-600 transition-colors">
+                  {company_info.email_display}
                 </a>
               </p>
             </div>
@@ -130,8 +141,8 @@ import Button from '../components/Button.astro';
                 Geschäftsführer
               </h3>
               <p class="text-dark-700">
-                Miodrag Jovanovic<br />
-                <span class="text-sm text-dark-600">Denkmal-, Fassaden- und Gebäudereinigungsmeister</span>
+                {company_info.ceo_name}<br />
+                <span class="text-sm text-dark-600">{company_info.ceo_title}</span>
               </p>
             </div>
           </div>
@@ -149,14 +160,14 @@ import Button from '../components/Button.astro';
             scrolling="no"
             marginheight="0"
             marginwidth="0"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=15.3973%2C47.0858%2C15.4173%2C47.0958&layer=mapnik&marker=47.0908%2C15.4073"
+            src={`https://www.openstreetmap.org/export/embed.html?bbox=${parseFloat(company_info.map.longitude) - 0.01}%2C${parseFloat(company_info.map.latitude) - 0.005}%2C${parseFloat(company_info.map.longitude) + 0.01}%2C${parseFloat(company_info.map.latitude) + 0.005}&layer=mapnik&marker=${company_info.map.latitude}%2C${company_info.map.longitude}`}
             style="border: 0"
             title="MIGA Dienstleistungen GmbH Standort"
           ></iframe>
         </div>
         <p class="text-center mt-4 text-sm text-dark-600">
           <a 
-            href="https://www.openstreetmap.org/?mlat=47.0908&mlon=15.4073#map=15/47.0908/15.4073" 
+            href={`https://www.openstreetmap.org/?mlat=${company_info.map.latitude}&mlon=${company_info.map.longitude}#map=15/${company_info.map.latitude}/${company_info.map.longitude}`} 
             target="_blank" 
             rel="noopener noreferrer"
             class="text-primary-600 hover:text-primary-700 transition-colors"

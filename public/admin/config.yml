@@ -7,6 +7,8 @@ backend:
 media_folder: "public/assets/uploads"
 public_folder: "/assets/uploads"
 
+locale: "de"
+
 collections:
   - name: "pages"
     label: "Seiten"
@@ -267,9 +269,6 @@ collections:
             fields:
               - {label: "Aktiviert", name: "enabled", widget: "boolean", default: true}
               - {label: "Text", name: "text", widget: "string"}
-              - {label: "Telefon", name: "phone", widget: "string"}
-              - {label: "E-Mail", name: "email", widget: "string"}
-              - {label: "Adresse (Kurz)", name: "address_short", widget: "string"}
               - {label: "CTA Text", name: "cta_label", widget: "string"}
               - {label: "CTA Link", name: "cta_link", widget: "string"}
               - {label: "Stil", name: "style_variant", widget: "select", options: ["dark", "light"], default: "dark"}
@@ -281,13 +280,36 @@ collections:
               - {label: "Untertitel (Optional)", name: "optional_subtitle", widget: "string", required: false}
               - {label: "Header CTA Text", name: "header_cta_label", widget: "string"}
               - {label: "Header CTA Link", name: "header_cta_link", widget: "string"}
+          
+          - label: "Firmeninformationen"
+            name: "company_info"
+            widget: "object"
+            fields:
+              - {label: "Firmenname", name: "company_name", widget: "string", default: "MIGA Dienstleistungen GmbH"}
+              - {label: "Straße", name: "street", widget: "string", default: "Josef–Pock–Strasse 66"}
+              - {label: "PLZ und Stadt", name: "city", widget: "string", default: "8051 Graz"}
+              - {label: "Telefon", name: "phone", widget: "string", default: "0664 25 28 150"}
+              - {label: "Telefon (Link Format)", name: "phone_link", widget: "string", default: "+436642528150", hint: "Format: +436642528150"}
+              - {label: "E-Mail (Anzeige)", name: "email_display", widget: "string", default: "miga2017@gmx.at"}
+              - {label: "E-Mail (Formular Empfänger)", name: "email_form", widget: "string", default: "a.terziev@live.at", hint: "E-Mail für Kontaktformular-Einreichungen"}
+              - {label: "Geschäftsführer Name", name: "ceo_name", widget: "string", default: "Miodrag Jovanovic"}
+              - {label: "Geschäftsführer Titel", name: "ceo_title", widget: "string", default: "Denkmal-, Fassaden- und Gebäudereinigungsmeister"}
+              - label: "Karte Koordinaten"
+                name: "map"
+                widget: "object"
+                fields:
+                  - {label: "Breitengrad", name: "latitude", widget: "string", default: "47.0908"}
+                  - {label: "Längengrad", name: "longitude", widget: "string", default: "15.4073"}
 
       - label: "Datenschutzerklärung"
         name: "privacy"
         file: "src/content/pages/datenschutz.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
-          - {label: "Inhalt", name: "body", widget: "markdown"}
+          - label: "Inhalt"
+            name: "body"
+            widget: "markdown"
+            hint: "Hinweis: Verwenden Sie {{COMPANY_NAME}}, {{COMPANY_STREET}}, {{COMPANY_CITY}}, {{COMPANY_PHONE}}, {{COMPANY_EMAIL}} als Platzhalter. Diese werden automatisch aus Site Settings ersetzt."
           - label: "SEO"
             name: "seo"
             widget: "object"
@@ -301,7 +323,10 @@ collections:
         file: "src/content/pages/impressum.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
-          - {label: "Inhalt", name: "body", widget: "markdown"}
+          - label: "Inhalt"
+            name: "body"
+            widget: "markdown"
+            hint: "Hinweis: Verwenden Sie {{COMPANY_NAME}}, {{COMPANY_STREET}}, {{COMPANY_CITY}}, {{COMPANY_PHONE}}, {{COMPANY_EMAIL}}, {{CEO_NAME}}, {{CEO_TITLE}} als Platzhalter. Diese werden automatisch aus Site Settings ersetzt."
           - label: "SEO"
             name: "seo"
             widget: "object"
@@ -309,5 +334,6 @@ collections:
             fields:
               - {label: "SEO Titel", name: "title", widget: "string", required: false}
               - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
+
 
 

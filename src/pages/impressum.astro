@@ -6,6 +6,17 @@ const entry = await getEntry('pages', 'impressum');
 if (!entry) {
   throw new Error('Impressum page content not found');
 }
+
+// Fetch site settings for company info
+const siteSettings = await getEntry('settings', 'site');
+if (!siteSettings) throw new Error('Site settings not found');
+const { company_info } = siteSettings.data as any;
+
+if (!company_info) {
+  throw new Error('Company info not found in site settings. Please check src/content/settings/site.md');
+}
+
+// Render content
 const { Content } = await entry.render();
 const { title, seo } = entry.data;
 ---
@@ -23,7 +34,7 @@ const { title, seo } = entry.data;
   <section class="section bg-white">
     <div class="container-custom">
       <div class="max-w-3xl mx-auto prose prose-lg">
-        <div class="space-y-6 text-dark-700">
+        <div class="space-y-6 text-dark-700" id="legal-content">
           <Content />
         </div>
       </div>
@@ -31,3 +42,18 @@ const { title, seo } = entry.data;
   </section>
 </BaseLayout>
 
+<script define:vars={{ company_info }}>
+  // Replace placeholders with actual company info on client side
+  const content = document.getElementById('legal-content');
+  if (content) {
+    let html = content.innerHTML;
+    html = html.replace(/\{\{COMPANY_NAME\}\}/g, company_info.company_name);
+    html = html.replace(/\{\{COMPANY_STREET\}\}/g, company_info.street);
+    html = html.replace(/\{\{COMPANY_CITY\}\}/g, company_info.city);
+    html = html.replace(/\{\{COMPANY_PHONE\}\}/g, `<a href="tel:${company_info.phone_link}" class="text-primary-600 hover:text-primary-700">${company_info.phone}</a>`);
+    html = html.replace(/\{\{COMPANY_EMAIL\}\}/g, `<a href="mailto:${company_info.email_display}" class="text-primary-600 hover:text-primary-700">${company_info.email_display}</a>`);
+    html = html.replace(/\{\{CEO_NAME\}\}/g, company_info.ceo_name);
+    html = html.replace(/\{\{CEO_TITLE\}\}/g, company_info.ceo_title);
+    content.innerHTML = html;
+  }
+</script>

@@ -7,9 +7,6 @@ const settingsCollection = defineCollection({
         top_banner: z.object({
             enabled: z.boolean(),
             text: z.string(),
-            phone: z.string(),
-            email: z.string(),
-            address_short: z.string(),
             cta_label: z.string(),
             cta_link: z.string(),
             style_variant: z.enum(['dark', 'light']).optional(),
@@ -19,6 +16,21 @@ const settingsCollection = defineCollection({
             optional_subtitle: z.string().optional(),
             header_cta_label: z.string(),
             header_cta_link: z.string(),
+        }),
+        company_info: z.object({
+            company_name: z.string(),
+            street: z.string(),
+            city: z.string(),
+            phone: z.string(),
+            phone_link: z.string(),
+            email_display: z.string(),
+            email_form: z.string(),
+            ceo_name: z.string(),
+            ceo_title: z.string(),
+            map: z.object({
+                latitude: z.string(),
+                longitude: z.string(),
+            }),
         }),
     }),
 });

@@ -8,18 +8,18 @@ seo:
 
 ### Firmenname
 
-MIGA Dienstleistungen GmbH
+{{COMPANY_NAME}}
 
 ### Anschrift
 
-Josef–Pock–Strasse 66
-8051 Graz
+{{COMPANY_STREET}}  
+{{COMPANY_CITY}}  
 Österreich
 
 ### Kontakt
 
-Mobil: 0664 25 28 150
-E-Mail: miga2017@gmx.at
+Mobil: {{COMPANY_PHONE}}  
+E-Mail: {{COMPANY_EMAIL}}
 
 ### Unternehmensgegenstand
 
@@ -35,8 +35,8 @@ Landesgericht für Zivilrechtssachen Graz
 
 ### Geschäftsführer
 
-Miodrag Jovanovic
-Denkmal-, Fassaden- und Gebäudereinigungsmeister
+{{CEO_NAME}}  
+{{CEO_TITLE}}
 
 ### UID-Nummer
 
@@ -48,9 +48,9 @@ Magistrat Graz
 
 ### Berufsbezeichnung
 
-Denkmal-, Fassaden- und Gebäudereinigungsmeister
+{{CEO_TITLE}}
 
-- - -
+---
 
 ### Haftungsausschluss
 
