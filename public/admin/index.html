@@ -8,20 +8,29 @@
 
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
 
-  <!-- CORS fix -->
-  <script src="/.netlify/identity/v1/netlify-identity-widget.js"></script>
+  <!-- Identity widget (CDN) -->
+  <script src="https://unpkg.com/netlify-identity-widget@^1.9.2/build/netlify-identity-widget.js"></script>
 
   <script>
     if (location.hash.startsWith("#/")) {
       location.replace(location.href.replace("#/", "#"));
+      return;
     }
 
     window.addEventListener("load", () => {
       if (!window.netlifyIdentity) return;
+
       window.netlifyIdentity.init();
 
-      if (location.hash.includes("invite_token=")) window.netlifyIdentity.open();
-      if (location.hash.includes("recovery_token=")) window.netlifyIdentity.open("recover");
+      if (location.hash.includes("invite_token=")) {
+        window.netlifyIdentity.open();
+        return;
+      }
+
+      if (location.hash.includes("recovery_token=")) {
+        window.netlifyIdentity.open("recover");
+        return;
+      }
 
       window.netlifyIdentity.on("login", () => {
         document.location.href = "/admin/";
