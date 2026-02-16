@@ -6,36 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
 
-  <!-- CORS fix: site origin üzerinden yükle -->
   <script src="/.netlify/identity/v1/netlify-identity-widget.js"></script>
 
   <script>
-    // Eğer invite/recovery token root'a düşerse admin'e taşı
+    if (location.hash.startsWith("#/")) {
+      location.replace(location.href.replace("#/", "#"));
+      return;
+    }
+
     const hasToken =
       location.hash.includes("recovery_token=") ||
       location.hash.includes("invite_token=");
 
     if (hasToken && !location.pathname.startsWith("/admin")) {
       location.replace("/admin/" + location.hash);
+      return;
     }
 
     window.addEventListener("load", () => {
       if (!window.netlifyIdentity) return;
 
-      // IMPORTANT: init'i zorla
       window.netlifyIdentity.init();
 
-      // Invite token varsa modalı aç (şifre belirleme/hesap oluşturma akışı)
-      if (location.hash.includes("invite_token=")) {
-        window.netlifyIdentity.open();
-      }
+      if (location.hash.includes("invite_token=")) window.netlifyIdentity.open();
+      if (location.hash.includes("recovery_token=")) window.netlifyIdentity.open("recover");
 
-      // Recovery token varsa recover akışını aç
-      if (location.hash.includes("recovery_token=")) {
-        window.netlifyIdentity.open("recover");
-      }
-
-      // Login olunca admin'e dön
       window.netlifyIdentity.on("login", () => {
         document.location.href = "/admin/";
       });
