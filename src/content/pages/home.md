@@ -28,6 +28,6 @@ cta_section:
   secondary_btn_link: tel:+436642528150
 headerBanner:
   enabled: true
-  image: /assets/uploads/_edited_steve-lieman-vy_suzp16tg-unsplash-960x300.jpg
+  image: ""
   variant: dark
 ---
