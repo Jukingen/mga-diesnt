@@ -1,0 +1,21 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Graz",
+			"country": {
+				"code": "AT",
+				"name": "Austria"
+			},
+			"subdivision": {
+				"code": "6",
+				"name": "Styria"
+			},
+			"timezone": "Europe/Vienna",
+			"latitude": 47.0257,
+			"longitude": 15.5325,
+			"postalCode": "8020"
+		},
+		"timestamp": 1771104600471
+	},
+	"siteId": "349e1e68-4eec-44b1-933c-6c971a2e21de"
+}
