@@ -78,24 +78,38 @@ const computedHeaderBanner = {
   <section class="section bg-white">
     <div class="container-custom">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {sortedServices.map((service, index) => (
+      {sortedServices.map((service) => {
+        const data = service.data as { title: string; description?: string; image?: string; banner?: { image?: string }; beforeAfter?: { beforeImage?: string; afterImage?: string } };
+        const hasBeforeAfter = data.beforeAfter?.beforeImage && data.beforeAfter?.afterImage;
+        const cardImage = data.banner?.image ?? data.image;
+        return (
         <a href={`/leistungen/${service.slug}`} class="group block h-full">
           <div class="card overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-primary-200">
-              {(service.data as any).image && (
+              {cardImage && (
                 <div class="h-48 relative overflow-hidden">
                    <img 
-                    src={(service.data as any).image} 
-                    alt={service.data.title} 
+                    src={cardImage} 
+                    alt={data.title} 
                     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
+                  {hasBeforeAfter && (
+                    <span class="absolute top-3 right-3 px-2 py-1 text-xs font-medium bg-primary-600 text-white rounded shadow-sm">
+                      Vorher/Nachher
+                    </span>
+                  )}
+                </div>
+              )}
+              {!cardImage && hasBeforeAfter && (
+                <div class="h-32 bg-gray-100 flex items-center justify-center relative">
+                  <span class="text-xs font-medium text-primary-600 bg-white px-3 py-1 rounded shadow-sm">Vorher/Nachher verfügbar</span>
                 </div>
               )}
               <div class="p-6 flex-grow flex flex-col">
                 <h2 class="heading-4 mb-3 text-primary-600 group-hover:text-primary-700 transition-colors">
-                    {service.data.title}
+                    {data.title}
                 </h2>
-                <p class="mb-4 text-dark-600 line-clamp-3">{service.data.description}</p>
+                <p class="mb-4 text-dark-600 line-clamp-3">{data.description}</p>
                 <div class="mt-auto">
                     <span class="text-sm font-semibold text-primary-600 flex items-center">
                         Mehr erfahren
@@ -107,7 +121,7 @@ const computedHeaderBanner = {
               </div>
           </div>
         </a>
-      ))}
+      );})}
       </div>
     </div>
   </section>

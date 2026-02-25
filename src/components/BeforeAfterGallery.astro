@@ -1,0 +1,140 @@
+---
+/**
+ * Vorher/Nachher-Galerie: Zwei Bilder mit optionaler Beschreibung.
+ * Görsellere tıklanınca modal ile büyütülür. ESC ve dışarı tıklama ile kapatılır.
+ */
+interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+  caption?: string;
+  title: string;
+}
+const { beforeSrc, afterSrc, caption, title } = Astro.props;
+const baseAlt = `${title} - Vorher/Nachher`;
+---
+
+<div class="before-after-gallery">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+    <div class="relative group">
+      <span class="absolute top-3 left-3 z-10 px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-primary-600 text-white rounded shadow-md">
+        Vorher
+      </span>
+      <button
+        type="button"
+        class="image-trigger w-full aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-zoom-in"
+        data-src={beforeSrc}
+        data-alt={`${baseAlt} - Vorher`}
+        aria-label="Vorher-Bild vergrößern"
+      >
+        <img
+          src={beforeSrc}
+          alt={`${baseAlt} - Vorher`}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </button>
+    </div>
+    <div class="relative group">
+      <span class="absolute top-3 left-3 z-10 px-3 py-1 text-xs font-semibold uppercase tracking-wider bg-primary-600 text-white rounded shadow-md">
+        Nachher
+      </span>
+      <button
+        type="button"
+        class="image-trigger w-full aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-zoom-in"
+        data-src={afterSrc}
+        data-alt={`${baseAlt} - Nachher`}
+        aria-label="Nachher-Bild vergrößern"
+      >
+        <img
+          src={afterSrc}
+          alt={`${baseAlt} - Nachher`}
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+        />
+      </button>
+    </div>
+  </div>
+  {caption && (
+    <p class="mt-4 text-dark-600 text-sm md:text-base">{caption}</p>
+  )}
+
+  <!-- Modal overlay -->
+  <div
+    id="image-modal"
+    class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Bild vergrößert"
+    tabindex="-1"
+  >
+    <div class="modal-backdrop absolute inset-0" aria-hidden="true"></div>
+    <div class="relative z-10 max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
+      <img
+        id="modal-image"
+        src=""
+        alt=""
+        class="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+      />
+      <button
+        type="button"
+        id="modal-close"
+        class="absolute -top-12 right-0 p-2 text-white hover:text-primary-300 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-white"
+        aria-label="Schließen"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-image');
+    const closeBtn = document.getElementById('modal-close');
+    const backdrop = modal?.querySelector('.modal-backdrop');
+    const triggers = document.querySelectorAll('.image-trigger');
+
+    function openModal(src: string, alt: string) {
+      if (!modal || !modalImg) return;
+      modalImg.src = src;
+      modalImg.alt = alt;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    triggers.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const src = (btn as HTMLElement).dataset.src;
+        const alt = (btn as HTMLElement).dataset.alt || '';
+        if (src) openModal(src, alt);
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  })();
+</script>
+
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .before-after-gallery img {
+      transition: none;
+    }
+  }
+</style>

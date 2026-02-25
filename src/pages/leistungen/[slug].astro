@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
+import BeforeAfterGallery from '../../components/BeforeAfterGallery.astro';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
-const { title, description: legacyDescription, items: legacyItems, image: legacyImage, banner, seo } = entry.data;
+const { title, description: legacyDescription, items: legacyItems, image: legacyImage, banner, seo, beforeAfter } = entry.data;
 
 // Fallback logic for Banner fields
 const bannerTitle = banner?.title || title;
@@ -25,6 +26,10 @@ const pageTitle = seo?.title || `${title} - MIGA Dienstleistungen GmbH`;
 const pageDescription = seo?.description || legacyDescription || `Professionelle Leistungen im Bereich ${title}.`;
 
 const hasLegacyItems = legacyItems && legacyItems.length > 0;
+
+// Vorher/Nachher: sadece her iki görsel varsa göster
+const hasBeforeAfter = beforeAfter?.beforeImage && beforeAfter?.afterImage;
+const allServices = (await getCollection('services')).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -51,6 +56,19 @@ const hasLegacyItems = legacyItems && legacyItems.length > 0;
            <div class="prose prose-lg prose-primary mb-12 max-w-none">
               <Content />
            </div>
+
+           {/* Vorher/Nachher Block - nur wenn beide Bilder vorhanden */}
+           {hasBeforeAfter && (
+             <section class="mb-12">
+               <h3 class="heading-4 mb-6 text-primary-600">Vorher & Nachher</h3>
+               <BeforeAfterGallery
+                 beforeSrc={beforeAfter!.beforeImage!}
+                 afterSrc={beforeAfter!.afterImage!}
+                 caption={beforeAfter?.caption}
+                 title={title}
+               />
+             </section>
+           )}
 
            {/* Legacy Items List - Only shown if items exist */}
            {hasLegacyItems && (
@@ -82,14 +100,14 @@ const hasLegacyItems = legacyItems && legacyItems.length > 0;
           <div class="bg-gray-50 p-6 rounded-lg border border-gray-100 sticky top-24">
             <h3 class="text-lg font-bold mb-4 border-b pb-2">Alle Leistungen</h3>
             <nav class="flex flex-col space-y-2">
-              <a href="/leistungen/reinigung" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Reinigung' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Reinigung</a>
-              <a href="/leistungen/gruenflaeche" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Grünflächenpflege' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Grünflächenpflege</a>
-              <a href="/leistungen/winterdienst" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Winterdienst' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Winterdienst</a>
-              <a href="/leistungen/transport" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Transport' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Transport</a>
-              <a href="/leistungen/tischler" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Tischlerarbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Tischlerarbeiten</a>
-              <a href="/leistungen/montage" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Montagearbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Montagearbeiten</a>
-              <a href="/leistungen/bau" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Bauarbeiten' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Bauarbeiten</a>
-              <a href="/leistungen/sanitaer" class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${title === 'Sanitärbereich' ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}>Sanitärbereich</a>
+              {allServices.map((s) => (
+                <a
+                  href={`/leistungen/${s.slug}`}
+                  class={`block p-2 rounded hover:bg-white hover:shadow-sm transition-colors ${s.slug === entry.slug ? 'font-bold text-primary-600 bg-white shadow-sm' : 'text-gray-700'}`}
+                >
+                  {s.data.title}
+                </a>
+              ))}
               <div class="pt-4 border-t mt-4">
                  <a href="/leistungen" class="text-sm text-primary-600 hover:text-primary-700 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">

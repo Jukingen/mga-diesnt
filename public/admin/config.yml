@@ -245,6 +245,18 @@ collections:
       
       - {label: "Detaillierter Inhalt (Markdown)", name: "body", widget: "markdown", required: false, hint: "Zusätzlicher Text für die Detail-Seite"}
       
+      # === VORHER / NACHHER ===
+      - label: "Vorher/Nachher"
+        name: "beforeAfter"
+        widget: "object"
+        required: false
+        collapsed: true
+        hint: "Zwei Bilder mit kurzer Beschreibung für den Vorher/Nachher-Bereich auf der Detailseite"
+        fields:
+          - {label: "Vorher Bild", name: "beforeImage", widget: "image", required: false}
+          - {label: "Nachher Bild", name: "afterImage", widget: "image", required: false}
+          - {label: "Kurzbeschreibung", name: "caption", widget: "string", required: false, hint: "Optionale Beschreibung zu den Bildern"}
+      
       # === SEO ===
       - label: "SEO (Optional)"
         name: "seo"

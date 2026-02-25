@@ -49,6 +49,12 @@ const servicesCollection = defineCollection({
             description: z.string().optional(),
         }).optional(),
         order: z.number().default(99),
+        /** Vorher/Nachher-Bilder: Mindestens 2 Bild (before, after). Erweiterbar für spätere Galerie. */
+        beforeAfter: z.object({
+            beforeImage: z.string().optional(),
+            afterImage: z.string().optional(),
+            caption: z.string().optional(),
+        }).optional(),
         // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),
         description: z.string().optional(),
