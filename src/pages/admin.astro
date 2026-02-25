@@ -1,0 +1,41 @@
+---
+/**
+ * Decap CMS Admin UI sayfası.
+ * Astro dev sunucusu public/admin/index.html'i /admin ile servis etmediği için
+ * (bilinen Astro davranışı), bu Astro route ile /admin adresinde CMS arayüzü sunulur.
+ */
+---
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager</title>
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
+  <script src="https://unpkg.com/netlify-identity-widget@^1.9.2/build/netlify-identity-widget.js"></script>
+  <script is:inline>
+    if (location.hash.startsWith("#/")) {
+      location.replace(location.href.replace("#/", "#"));
+      return;
+    }
+    window.addEventListener("load", () => {
+      if (!window.netlifyIdentity) return;
+      window.netlifyIdentity.init();
+      if (location.hash.includes("invite_token=")) {
+        window.netlifyIdentity.open();
+        return;
+      }
+      if (location.hash.includes("recovery_token=")) {
+        window.netlifyIdentity.open("recover");
+        return;
+      }
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin";
+      });
+    });
+  </script>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</body>
+</html>

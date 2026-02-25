@@ -1,3 +1,5 @@
+# Lokal geliştirme: npx decap-server ile lokal backend kullanılır.
+# Production'da Netlify Identity + Git Gateway kullanılır.
 local_backend: true
 
 backend:

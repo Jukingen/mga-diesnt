@@ -168,7 +168,21 @@ npm run preview
 
 ## 🐛 Troubleshooting
 
-### CMS Login Issues
+### Lokal CMS Önizleme (Netlify Identity olmadan)
+
+`/admin` sayfası lokal geliştirmede açılır, ancak Netlify Identity/Git Gateway lokal çalışmaz. İçerik düzenlemek için **lokal backend** kullanabilirsiniz:
+
+```bash
+# Terminal 1: Dev sunucusu
+npm run dev
+
+# Terminal 2: Decap lokal backend (config.yml'de local_backend: true ile)
+npx decap-server
+```
+
+Decap server başladıktan sonra `/admin` sayfasında "Login" yerine lokal backend'e bağlanırsınız; değişiklikler `public/admin/` altında JSON olarak saklanır.
+
+### CMS Login Issues (Production)
 
 1. Ensure Netlify Identity is enabled
 2. Ensure Git Gateway is enabled

@@ -16,6 +16,11 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
+# Decap CMS: /admin ve /admin/ -> admin UI
+[[redirects]]
+  from = "/admin"
+  to = "/admin/"
+  status = 302
 [[redirects]]
   from = "/admin/*"
   to = "/admin/index.html"
