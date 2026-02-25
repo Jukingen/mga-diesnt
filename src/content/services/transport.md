@@ -6,5 +6,5 @@ items:
   - Entsorgungen aller Art
   - Entrümpelungen
   - Übersiedlungen
-  - Kfz Überstellungen
+  - Fahrzeugüberstellungen
 ---

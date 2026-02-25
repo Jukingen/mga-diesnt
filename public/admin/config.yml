@@ -43,7 +43,7 @@ collections:
             widget: "object"
             fields:
               - {label: "Überschrift", name: "heading", widget: "string", default: "Unsere Leistungen"}
-              - {label: "Untertitel", name: "subheading", widget: "string", default: "Von Reinigung bis KFZ-Service – wir sind Ihr kompetenter Partner"}
+              - {label: "Untertitel", name: "subheading", widget: "string", default: "Von Reinigung bis Sanitär – wir sind Ihr kompetenter Partner"}
 
           - label: "CTA Bereich (Unten)"
             name: "cta_section"

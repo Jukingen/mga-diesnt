@@ -18,7 +18,7 @@ about_section:
     Zuverlässigkeit.
 services_section:
   heading: Unsere Leistungen
-  subheading: Von Reinigung bis KFZ-Service – wir sind Ihr kompetenter Partner
+  subheading: Von Reinigung bis Sanitär – wir sind Ihr kompetenter Partner
 cta_section:
   heading: Bereit für Ihr Projekt?
   content: Kontaktieren Sie uns noch heute für ein unverbindliches Angebot

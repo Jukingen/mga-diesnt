@@ -22,7 +22,7 @@ values:
       description: Wir nehmen uns Zeit für Ihre Anliegen und bieten individuelle
         Lösungen für Ihre Bedürfnisse.
     - title: Vielseitigkeit
-      description: Von Reinigung über Gartenarbeit bis hin zu KFZ-Service – wir sind
+      description: Von Reinigung über Gartenarbeit bis hin zu Sanitär – wir sind
         Ihr Ansprechpartner für viele Bereiche.
 why_miga:
   enabled: true

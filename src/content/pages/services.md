@@ -13,8 +13,7 @@ cta_section:
 seo:
   title: Unsere Leistungen - MIGA Dienstleistungen GmbH
   description: "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege,
-    Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten, Sanitär und
-    KFZ-Service in Graz."
+    Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten und Sanitär in Graz."
 privacy: "11111111111"
 impressum: "222222222222222"
 ---

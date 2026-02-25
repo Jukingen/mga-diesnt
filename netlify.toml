@@ -20,3 +20,13 @@
   from = "/admin/*"
   to = "/admin/index.html"
   status = 200
+
+# Kfz kategorisi kaldırıldı – eski URL'ler ana Leistungen sayfasına yönlendirilir
+[[redirects]]
+  from = "/leistungen/kfz"
+  to = "/leistungen/"
+  status = 301
+[[redirects]]
+  from = "/leistungen/kfz/*"
+  to = "/leistungen/"
+  status = 301
