@@ -81,38 +81,47 @@ const finalCTA = cta_section || defaultCTA;
   </section>
 
   <!-- Services Preview -->
-  <section class="section bg-dark-50">
-    <div class="container-custom">
+  <section class="py-24 bg-gradient-to-b from-white to-gray-50">
+    <div class="container-custom max-w-7xl mx-auto">
       <div class="text-center mb-12">
         <h2 class="heading-2 mb-4">{finalServicesSec.heading}</h2>
         <p class="text-lg text-dark-600">{finalServicesSec.subheading}</p>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {sortedServices.map((service, index) => {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 items-stretch">
+        {sortedServices.map((service) => {
           const image = service.data.banner?.image || (service.data as any).image;
+          const desc = service.data.banner?.description || (service.data as any).description || service.data.description;
           return (
-            <div class="card group hover:scale-105">
-              <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-600 transition-colors overflow-hidden">
-                {image ? (
-                  <img src={image} alt={service.data.title} class="w-full h-full object-cover" />
-                ) : (
-                   <svg class="w-6 h-6 text-primary-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a
+              href={`/leistungen/${service.slug}`}
+              class="group relative flex flex-col h-full rounded-2xl bg-white/80 backdrop-blur-sm border border-white/40 p-8 transition-all duration-300 ease-out shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-hidden"
+            >
+              <span class="absolute top-0 left-0 right-0 h-0.5 bg-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></span>
+              <div class="flex flex-col gap-4 flex-grow">
+                <div class="h-12 w-12 rounded-xl bg-primary-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-500/20 transition-colors duration-300 overflow-hidden">
+                  {image ? (
+                    <img src={image} alt={service.data.title} class="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <svg class="w-6 h-6 text-primary-600 group-hover:text-primary-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                   </svg>
-                )}
+                    </svg>
+                  )}
+                </div>
+                <h3 class="text-xl font-semibold tracking-tight text-primary-600 group-hover:text-primary-700 transition-colors flex-shrink-0">
+                  {service.data.title}
+                </h3>
+                <p class="text-gray-600 leading-relaxed line-clamp-3 flex-grow">
+                  {desc}
+                </p>
+                <span class="mt-auto relative inline-flex items-center gap-2 font-medium text-primary-600 group-hover:text-primary-700 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-primary-600 after:w-0 after:transition-all after:duration-300 group-hover:after:w-full after:content-['']">
+                  Mehr erfahren
+                  <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </span>
               </div>
-              <h3 class="heading-4 mb-3">{service.data.title}</h3>
-              <p class="text-dark-600 mb-4 line-clamp-3">
-                {service.data.banner?.description || (service.data as any).description || service.data.description}
-              </p>
-              <a href={`/leistungen/${service.slug}`} class="text-primary-600 font-semibold hover:text-primary-700 inline-flex items-center">
-                Mehr erfahren
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </div>
+            </a>
           );
         })}
       </div>

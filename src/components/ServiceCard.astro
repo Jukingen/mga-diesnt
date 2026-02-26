@@ -1,8 +1,10 @@
 ---
 /**
- * Leistungen liste sayfası için servis kartı.
- * Before/After varsa inline chip; floating topper YOK.
+ * Leistungen liste sayfası – Apple tarzı ultra minimal kart.
+ * Before/After thumbnail strip sadece beforeImage+afterImage olan kartlarda.
  */
+import BeforeAfterFloatingThumbs from './BeforeAfterFloatingThumbs.astro';
+
 interface Props {
   slug: string;
   title: string;
@@ -10,45 +12,59 @@ interface Props {
   cardImage?: string;
   beforeAfter?: { beforeImage?: string; afterImage?: string };
 }
+
 const { slug, title, description, cardImage, beforeAfter } = Astro.props;
-const hasBeforeAfter = !!(beforeAfter?.beforeImage && beforeAfter?.afterImage);
+
+function normImg(v: string | { url?: string; path?: string } | undefined): string {
+  if (!v) return '';
+  if (typeof v === 'string') return v.startsWith('/') ? v : `/${v}`;
+  const u = (v as { url?: string; path?: string }).url ?? (v as { path?: string }).path;
+  return u ? (u.startsWith('/') ? u : `/${u}`) : '';
+}
+
+const beforeSrc = normImg(beforeAfter?.beforeImage);
+const afterSrc = normImg(beforeAfter?.afterImage);
+const hasBeforeAfter = !!beforeSrc && !!afterSrc;
 ---
 
-<a href={`/leistungen/${slug}`} class="group block h-full">
-  <div class="h-full flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 group-hover:border-primary-100">
+<div class="h-full flex flex-col">
+  {hasBeforeAfter && (
+    <BeforeAfterFloatingThumbs
+      beforeSrc={beforeSrc}
+      afterSrc={afterSrc}
+      title={title}
+      id={slug}
+    />
+  )}
+  <a
+    href={`/leistungen/${slug}`}
+    class="group block flex-grow min-h-0 rounded-3xl bg-transparent p-0 flex flex-col transition-all duration-500 ease-out hover:scale-[1.015]"
+  >
     {cardImage && (
-      <div class="h-48 relative overflow-hidden flex-shrink-0">
+      <div class="rounded-2xl overflow-hidden flex-shrink-0 mb-6">
         <img
           src={cardImage}
           alt={title}
-          class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          class="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           loading="lazy"
         />
       </div>
     )}
-    <div class="flex flex-col flex-grow min-h-0 p-6 md:p-7">
-      {hasBeforeAfter && (
-        <span class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 mb-3 w-fit flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M3 4a1 1 0 011-1h4a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm10 0a1 1 0 011-1h4a1 1 0 011 1v10a1 1 0 01-1 1h-4a1 1 0 01-1-1V4z" />
-          </svg>
-          Vorher–Nachher
-        </span>
-      )}
-      <h2 class="heading-4 text-primary-600 group-hover:text-primary-700 transition-colors mb-3 flex-shrink-0">
+    <div class="flex flex-col flex-grow min-h-0">
+      <h2 class="text-2xl font-medium tracking-tight text-gray-900 group-hover:text-primary-600 transition-colors duration-500">
         {title}
       </h2>
-      <p class="text-gray-600 line-clamp-3 mb-4 flex-shrink-0">
+      <p class="mt-4 text-gray-500 leading-relaxed max-w-[32ch] line-clamp-3 flex-grow">
         {description}
       </p>
-      <div class="mt-auto pt-5 flex-shrink-0">
-        <span class="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 group-hover:text-primary-700 group-hover:underline transition-all duration-200">
+      <div class="mt-auto pt-8">
+        <span class="inline-flex items-center gap-2 text-primary-600 font-medium transition-all duration-300 group-hover:gap-3">
           Mehr erfahren
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </span>
       </div>
     </div>
-  </div>
-</a>
+  </a>
+</div>

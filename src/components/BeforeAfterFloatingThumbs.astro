@@ -1,0 +1,128 @@
+---
+/**
+ * Kartın üstünde before/after thumbnails (relative flow, mobil uyumlu).
+ * Tıklanınca modal ile büyük görsel.
+ */
+interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+  title: string;
+  id: string;
+}
+const { beforeSrc, afterSrc, title, id } = Astro.props;
+const modalId = `before-after-modal-${id}`;
+const baseAlt = `${title} – Vorher/Nachher`;
+---
+
+<!-- Relative flow: üstte thumb strip, altında kart content -->
+<div class="flex flex-col w-full" data-before-after-thumbs role="presentation">
+  <div class="flex justify-center mb-4">
+    <div class="flex gap-2 rounded-2xl border border-gray-200 bg-white shadow-sm px-2 py-2">
+      <button
+        type="button"
+        class="thumb-trigger relative shrink-0 w-20 h-14 rounded-xl overflow-hidden border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-transform duration-200 hover:scale-[1.02]"
+        data-src={beforeSrc}
+        data-alt={`${baseAlt} - Vorher`}
+        data-modal={modalId}
+        aria-label="Vorher-Bild vergrößern"
+      >
+        <span class="absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[10px] font-medium bg-white/90 border border-gray-200 rounded-full text-gray-600 shadow-sm">
+          Vorher
+        </span>
+        <img
+          src={beforeSrc}
+          alt={`${baseAlt} - Vorher`}
+          class="absolute inset-0 w-full h-full object-cover min-w-0 min-h-0"
+          loading="lazy"
+          decoding="async"
+          width="80"
+          height="56"
+        />
+      </button>
+      <button
+        type="button"
+        class="thumb-trigger relative shrink-0 w-20 h-14 rounded-xl overflow-hidden border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-transform duration-200 hover:scale-[1.02]"
+        data-src={afterSrc}
+        data-alt={`${baseAlt} - Nachher`}
+        data-modal={modalId}
+        aria-label="Nachher-Bild vergrößern"
+      >
+        <span class="absolute top-1 left-1 z-10 px-1.5 py-0.5 text-[10px] font-medium bg-white/90 border border-gray-200 rounded-full text-gray-600 shadow-sm">
+          Nachher
+        </span>
+        <img
+          src={afterSrc}
+          alt={`${baseAlt} - Nachher`}
+          class="absolute inset-0 w-full h-full object-cover min-w-0 min-h-0"
+          loading="lazy"
+          decoding="async"
+          width="80"
+          height="56"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal (her kart için kendi modal) -->
+<div
+  id={modalId}
+  class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Bild vergrößert"
+  tabindex="-1"
+>
+  <div class="modal-backdrop absolute inset-0" aria-hidden="true"></div>
+  <div class="relative z-10 max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
+    <img
+      class="modal-image max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+      src=""
+      alt=""
+    />
+    <button
+      type="button"
+      class="modal-close absolute -top-12 right-0 p-2 text-white hover:text-primary-300 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-white"
+      aria-label="Schließen"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ modalId }}>
+  (function () {
+    const thumbs = document.querySelectorAll('[data-modal="' + modalId + '"]');
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var modal = document.getElementById(modalId);
+        var img = modal && modal.querySelector('.modal-image');
+        var closeBtn = modal && modal.querySelector('.modal-close');
+        var backdrop = modal && modal.querySelector('.modal-backdrop');
+        if (!modal || !img) return;
+        img.src = btn.dataset.src || '';
+        img.alt = btn.dataset.alt || '';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        if (closeBtn) closeBtn.focus();
+
+        function closeModal() {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+        if (closeBtn) closeBtn.addEventListener('click', closeModal, { once: true });
+        if (backdrop) backdrop.addEventListener('click', closeModal, { once: true });
+        function onEsc(ev) {
+          if (ev.key === 'Escape') { closeModal(); modal.removeEventListener('keydown', onEsc); }
+        }
+        modal.addEventListener('keydown', onEsc);
+      });
+    });
+  })();
+</script>
