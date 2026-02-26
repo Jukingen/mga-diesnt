@@ -317,7 +317,7 @@ collections:
               - {label: "Telefon", name: "phone", widget: "string", default: "0664 25 28 150"}
               - {label: "Telefon (Link Format)", name: "phone_link", widget: "string", default: "+436642528150", hint: "Format: +436642528150"}
               - {label: "E-Mail (Anzeige)", name: "email_display", widget: "string", default: "miga2017@gmx.at"}
-              - {label: "E-Mail (Formular Empfänger)", name: "email_form", widget: "string", default: "a.terziev@live.at", hint: "E-Mail für Kontaktformular-Einreichungen"}
+              - {label: "E-Mail (Formular Empfänger)", name: "email_form", widget: "string", default: "miga2017@gmx.at", hint: "E-Mail für Kontaktformular-Einreichungen"}
               - {label: "Geschäftsführer Name", name: "ceo_name", widget: "string", default: "Miodrag Jovanovic"}
               - {label: "Geschäftsführer Titel", name: "ceo_title", widget: "string", default: "Denkmal-, Fassaden- und Gebäudereinigungsmeister"}
               - label: "Karte Koordinaten"

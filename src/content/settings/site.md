@@ -14,7 +14,7 @@ header:
 company_info:
   street: Josef–Pock–Strasse 66
   ceo_title: Denkmal-, Fassaden- und Gebäudereinigungsmeister
-  email_form: a.terziev@live.at
+  email_form: miga2017@gmx.at
   phone_link: "+436642528150"
   city: 8051 Graz
   company_name: MIGA Dienstleistungen GmbH
