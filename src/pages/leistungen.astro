@@ -9,9 +9,6 @@ import { getVisibleImage } from '../lib/imageUtils';
 const services = await getCollection('services');
 const sortedServices = services.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 
-const entry = await getEntry('pages', 'services');
-const { title: pageTitle, headerBanner, seo, cta_section } = entry?.data || {};
-
 const DEFAULT_BANNER_IMAGE = '/assets/uploads/default-service-banner.jpg';
 const FALLBACK_TITLE = 'Unsere Leistungen';
 const FALLBACK_BANNER_TEXT = 'Professionelle Dienstleistungen für jeden Bedarf';
@@ -22,7 +19,11 @@ const FALLBACK_CTA = {
   button_link: '/kontakt'
 };
 
-const finalTitle = pageTitle || FALLBACK_TITLE;
+const entry = await getEntry('pages', 'services');
+const { title: pageTitle, headerBanner, seo, cta_section, intro_text } = (entry?.data || {}) as { intro_text?: string };
+// Fallback: meta_title → seo.title → page title; meta_description → seo.description → default
+const finalTitle = (seo as any)?.meta_title || seo?.title || pageTitle || FALLBACK_TITLE;
+const finalDescription = (seo as any)?.meta_description || seo?.description || "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten und Sanitär in Graz und Steiermark.";
 const finalSubtitle = headerBanner?.text || FALLBACK_BANNER_TEXT;
 const finalImage = headerBanner?.image || DEFAULT_BANNER_IMAGE;
 const isBannerEnabled = headerBanner?.enabled !== false;
@@ -44,8 +45,9 @@ const computedHeaderBanner = {
 ---
 
 <BaseLayout
-  title={seo?.title || "Unsere Leistungen - MIGA Dienstleistungen GmbH"}
-  description={seo?.description || "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten und Sanitär in Graz."}
+  title={finalTitle}
+  description={finalDescription}
+  image={seo?.og_image || headerBanner?.image}
   headerBanner={computedHeaderBanner}
 >
   <!-- Hero -->
@@ -54,8 +56,12 @@ const computedHeaderBanner = {
       <div class="absolute inset-0 z-0">
         <img
           src={finalImage}
-          alt={finalTitle}
+          alt={`${finalTitle} – Professionelle Dienstleistungen in Graz und Steiermark`}
           class="w-full h-full object-cover opacity-90"
+          loading="eager"
+          decoding="async"
+          width="1200"
+          height="400"
         />
         <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20"></div>
       </div>
@@ -65,6 +71,13 @@ const computedHeaderBanner = {
       <p class="text-xl text-white font-medium">{finalSubtitle}</p>
     </div>
   </section>
+
+  <!-- SEO Intro Text (250-500 Wörter für lokale Keywords) -->
+  {intro_text && (
+    <section class="section bg-white">
+      <div class="container-custom max-w-4xl mx-auto prose prose-lg prose-primary max-w-none" set:html={(await import('marked')).marked.parse(intro_text)} />
+    </section>
+  )}
 
   <!-- Services Grid: overflow-visible so floating thumbs don't get clipped -->
   <section class="py-20 md:py-24 bg-gradient-to-b from-white to-slate-50 overflow-visible">

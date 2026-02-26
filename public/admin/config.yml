@@ -178,6 +178,7 @@ collections:
         file: "src/content/pages/services.md"
         fields:
           - {label: "Titel", name: "title", widget: "string"}
+          - {label: "SEO Einleitungstext (250-500 Wörter)", name: "intro_text", widget: "markdown", required: false, hint: "Für Suchmaschinen, H2-Überschriften möglich"}
           - label: "Header Banner (Optional)"
             name: "headerBanner"
             widget: "object"
@@ -202,11 +203,14 @@ collections:
             name: "seo"
             widget: "object"
             required: false
+            collapsed: true
             fields:
               - {label: "SEO Titel", name: "title", widget: "string", required: false}
               - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
-
-
+              - {label: "Meta Titel (Überschreibt)", name: "meta_title", widget: "string", required: false}
+              - {label: "Meta Beschreibung (Überschreibt)", name: "meta_description", widget: "text", required: false}
+              - {label: "Fokus-Keyword", name: "focus_keyword", widget: "string", required: false}
+              - {label: "OG-Bild", name: "og_image", widget: "image", required: false}
 
 
 
@@ -268,6 +272,10 @@ collections:
         fields:
           - {label: "SEO Titel", name: "title", widget: "string", required: false}
           - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
+          - {label: "Meta Titel (Überschreibt)", name: "meta_title", widget: "string", required: false, hint: "50-60 Zeichen"}
+          - {label: "Meta Beschreibung (Überschreibt)", name: "meta_description", widget: "text", required: false, hint: "150-160 Zeichen"}
+          - {label: "Fokus-Keyword", name: "focus_keyword", widget: "string", required: false}
+          - {label: "OG-Bild", name: "og_image", widget: "image", required: false}
       
       # === DEPRECATED (für Datenkompatibilität) ===
       - {label: "Altes Bild (Deprecated)", name: "image", widget: "image", required: false, hidden: true}
@@ -330,9 +338,14 @@ collections:
             name: "seo"
             widget: "object"
             required: false
+            collapsed: true
             fields:
               - {label: "SEO Titel", name: "title", widget: "string", required: false}
               - {label: "Meta Beschreibung", name: "description", widget: "text", required: false}
+              - {label: "Meta Titel (Überschreibt)", name: "meta_title", widget: "string", required: false}
+              - {label: "Meta Beschreibung (Überschreibt)", name: "meta_description", widget: "text", required: false}
+              - {label: "Fokus-Keyword", name: "focus_keyword", widget: "string", required: false}
+              - {label: "OG-Bild", name: "og_image", widget: "image", required: false}
 
       - label: "Impressum"
         name: "impressum"

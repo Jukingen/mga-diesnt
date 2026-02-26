@@ -19,12 +19,11 @@ if (!company_info) {
 // Render content
 const { Content } = await entry.render();
 const { title, seo } = entry.data;
+const finalTitle = (seo as any)?.meta_title || seo?.title || `${title} - MIGA Dienstleistungen GmbH`;
+const finalDescription = (seo as any)?.meta_description || seo?.description || "Impressum und rechtliche Informationen der MIGA Dienstleistungen GmbH";
 ---
 
-<BaseLayout 
-  title={seo?.title || `${title} - MIGA Dienstleistungen GmbH`}
-  description={seo?.description || "Impressum und rechtliche Informationen der MIGA Dienstleistungen GmbH"}
->
+<BaseLayout title={finalTitle} description={finalDescription} image={(seo as any)?.og_image}>
   <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
     <div class="container-custom">
       <h1 class="heading-1 text-white mb-4">{title}</h1>

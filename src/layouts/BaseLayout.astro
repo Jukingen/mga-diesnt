@@ -1,9 +1,12 @@
 ---
-const { title, description, image = '/images/og-image.jpg', headerBanner: pageBanner } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description, image, headerBanner: pageBanner } = Astro.props;
+// Fallback: /uploads/ mevcut görsel (1200x630 OG önerilir)
+const ogImage = image ?? '/uploads/meg-jenson-idi7kb6eqy0-unsplash.jpg';
 
 import TopBanner from '../components/TopBanner.astro';
 import Header from '../components/Header.astro';
+import SEO from '../components/SEO.astro';
+import StructuredData from '../components/StructuredData.astro';
 import { getEntry } from 'astro:content';
 
 // Fetch global settings
@@ -52,25 +55,16 @@ if (pageBanner && pageBanner.enabled) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
-    <!-- SEO -->
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    <SEO title={title} description={description} ogImage={ogImage} />
+    <StructuredData localBusiness={{
+      companyName: company_info.company_name,
+      street: company_info.street,
+      city: company_info.city,
+      phone: company_info.phone,
+      email: company_info.email_display,
+      latitude: company_info.map.latitude,
+      longitude: company_info.map.longitude,
+    }} />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

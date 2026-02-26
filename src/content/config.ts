@@ -65,6 +65,10 @@ const servicesCollection = defineCollection({
         seo: z.object({
             title: z.string().optional(),
             description: z.string().optional(),
+            meta_title: z.string().optional(),
+            meta_description: z.string().optional(),
+            focus_keyword: z.string().optional(),
+            og_image: z.string().optional(),
         }).optional(),
         order: z.number().default(99),
         /** Vorher/Nachher: Detay sayfası için before/after. CMS flat format (Src/Hidden) schema tarafından nested formata dönüştürülür. */
@@ -95,7 +99,7 @@ const servicesCollection = defineCollection({
         image: z.string().optional(),
         description: z.string().optional(),
         items: z.array(z.string()).optional(),
-    }),
+    }).passthrough(),
 });
 
 const pagesCollection = defineCollection({

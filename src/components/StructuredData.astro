@@ -1,0 +1,73 @@
+---
+/**
+ * JSON-LD Structured Data: LocalBusiness und Service (schema.org)
+ */
+interface LocalBusinessData {
+  companyName: string;
+  street: string;
+  city: string;
+  phone: string;
+  email: string;
+  latitude: string;
+  longitude: string;
+}
+
+interface ServiceData {
+  name: string;
+  description: string;
+  areaServed?: string[];
+}
+
+const site = Astro.site ?? 'https://miga-dienstleistungen.at';
+
+const schemas: object[] = [];
+
+// LocalBusiness (global)
+if (Astro.props.localBusiness) {
+  const lb = Astro.props.localBusiness as LocalBusinessData;
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${site}/#organization`,
+    name: lb.companyName,
+    description: 'MIGA Dienstleistungen GmbH – Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten und Sanitär in Graz und Steiermark.',
+    url: site,
+    telephone: lb.phone,
+    email: lb.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: lb.street,
+      addressLocality: lb.city,
+      addressRegion: 'Steiermark',
+      addressCountry: 'AT',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: parseFloat(lb.latitude),
+      longitude: parseFloat(lb.longitude),
+    },
+    areaServed: [
+      { '@type': 'City', name: 'Graz' },
+      { '@type': 'State', name: 'Steiermark' },
+    ],
+  });
+}
+
+// Service (hizmet sayfası)
+if (Astro.props.service) {
+  const svc = Astro.props.service as ServiceData;
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: svc.name,
+    description: svc.description,
+    serviceType: svc.name,
+    areaServed: (svc.areaServed || ['Graz', 'Steiermark']).map((a) => ({ '@type': 'Place', name: a })),
+    provider: { '@type': 'Organization', name: 'MIGA Dienstleistungen GmbH', '@id': `${site}/#organization` },
+  });
+}
+
+const jsonLd = schemas.length === 1 ? schemas[0] : { '@context': 'https://schema.org', '@graph': schemas };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

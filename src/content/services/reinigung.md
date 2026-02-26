@@ -30,3 +30,11 @@ beforeAfter:
   afterImageHidden: false
   caption: Beispiel einer professionellen Reinigung – Vorher und Nachher.
 ---
+
+## Professionelle Reinigung in Graz und Steiermark
+
+MIGA bietet **Reinigungsdienstleistungen** für Gebäude, Büros und Privathaushalte in Graz, Steiermark und Umgebung. Von der Bauendreinigung bis zur Fassadenreinigung – wir sind Ihr zuverlässiger Partner.
+
+## Unsere Reinigungsleistungen im Überblick
+
+Wir führen Stiegenhäuserreinigung, Wohnungsreinigung, Fensterreinigung, Grundreinigung verschiedener Böden und vieles mehr durch. Gerne erstellen wir ein unverbindliches Angebot für Ihr Objekt.
