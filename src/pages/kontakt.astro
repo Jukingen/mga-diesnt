@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
 import { getEntry } from 'astro:content';
 
 // Fetch site settings for company info
@@ -31,12 +30,17 @@ if (!company_info) {
         <!-- Contact Form -->
         <div>
           <h2 class="heading-3 mb-6">Kontaktformular</h2>
-          <form action={`https://formsubmit.co/${company_info.email_form}`} method="POST" class="space-y-6">
+          <form id="contact-form" action={`https://formsubmit.co/ajax/${company_info.email_form}`} method="POST" class="space-y-6" novalidate>
             <!-- FormSubmit Configuration -->
             <input type="hidden" name="_subject" value="Neue Anfrage über MIGA Website">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" id="_ts" name="_ts" value="" />
+            <!-- Honeypot: Bot trap, offscreen-hidden for a11y -->
+            <div class="sr-only" aria-hidden="true">
+              <label for="_honey">Bitte dieses Feld leer lassen</label>
+              <input id="_honey" type="text" name="_honey" tabindex="-1" autocomplete="off" />
+            </div>
             
             <div>
               <label for="name" class="block text-sm font-semibold text-dark-700 mb-2">
@@ -80,9 +84,10 @@ if (!company_info) {
               ></textarea>
             </div>
 
-            <Button type="submit" variant="primary" class="w-full shadow-md">
-              Nachricht senden
-            </Button>
+            <div id="form-status" class="hidden rounded-lg p-4 text-sm" aria-live="polite" role="status"></div>
+            <button type="submit" id="submit-btn" class="inline-flex items-center justify-center font-medium w-full px-6 py-3 rounded-xl bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:pointer-events-none">
+              <span id="submit-text">Nachricht senden</span>
+            </button>
           </form>
         </div>
 
@@ -178,4 +183,101 @@ if (!company_info) {
       </div>
     </div>
   </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-form');
+      const tsInput = document.getElementById('_ts');
+      const statusEl = document.getElementById('form-status');
+      const submitBtn = document.getElementById('submit-btn');
+      const submitText = document.getElementById('submit-text');
+
+      if (!form || !tsInput || !statusEl || !submitBtn || !submitText) return;
+
+      tsInput.value = Date.now().toString();
+      const endpoint = form.getAttribute('action') || '';
+
+      const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      const showStatus = (msg: string, isSuccess: boolean) => {
+        statusEl.textContent = msg;
+        statusEl.className = isSuccess
+          ? 'rounded-lg p-4 text-sm bg-green-50 text-green-800'
+          : 'rounded-lg p-4 text-sm bg-red-50 text-red-800';
+        statusEl.classList.remove('hidden');
+      };
+
+      const setLoading = (loading: boolean) => {
+        submitBtn.disabled = loading;
+        submitText.textContent = loading ? 'Senden…' : 'Nachricht senden';
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        statusEl.classList.add('hidden');
+        statusEl.textContent = '';
+
+        const nameVal = (form.querySelector('[name="name"]') as HTMLInputElement)?.value?.trim() ?? '';
+        const emailVal = (form.querySelector('[name="email"]') as HTMLInputElement)?.value?.trim() ?? '';
+        const messageVal = (form.querySelector('[name="message"]') as HTMLTextAreaElement)?.value?.trim() ?? '';
+
+        if (!nameVal) {
+          showStatus('Bitte geben Sie Ihren Namen ein.', false);
+          return;
+        }
+        if (!emailVal) {
+          showStatus('Bitte geben Sie Ihre E-Mail-Adresse ein.', false);
+          return;
+        }
+        if (!EMAIL_REGEX.test(emailVal)) {
+          showStatus('Bitte geben Sie eine gültige E-Mail-Adresse ein.', false);
+          return;
+        }
+        if (!messageVal) {
+          showStatus('Bitte geben Sie eine Nachricht ein.', false);
+          return;
+        }
+
+        const honey = form.querySelector('[name="_honey"]') as HTMLInputElement | null;
+        if (honey?.value.trim() !== '') {
+          showStatus('Spam-Schutz: Bitte prüfen Sie Ihre Eingabe.', false);
+          return;
+        }
+
+        const ts = parseInt(tsInput.value, 10);
+        if (Date.now() - ts < 3000) {
+          showStatus('Bitte warten Sie kurz und senden Sie das Formular erneut.', false);
+          return;
+        }
+
+        setLoading(true);
+        try {
+          const formData = new FormData(form);
+          const body: Record<string, string> = {};
+          formData.forEach((v, k) => { body[k] = String(v); });
+
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+
+          await res.json().catch(() => ({}));
+          if (res.ok) {
+            showStatus('Danke! Ihre Nachricht wurde gesendet.', true);
+            (form.querySelector('[name="name"]') as HTMLInputElement).value = '';
+            (form.querySelector('[name="email"]') as HTMLInputElement).value = '';
+            (form.querySelector('[name="message"]') as HTMLTextAreaElement).value = '';
+            tsInput.value = Date.now().toString();
+          } else {
+            showStatus('Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.', false);
+          }
+        } catch {
+          showStatus('Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.', false);
+        } finally {
+          setLoading(false);
+        }
+      });
+    });
+  </script>
 </BaseLayout>
