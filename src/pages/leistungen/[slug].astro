@@ -67,6 +67,7 @@ const allServices = (await getCollection('services')).sort((a, b) => (a.data.ord
                  afterSrc={afterSrc}
                  caption={beforeAfter?.caption}
                  title={title}
+                 modalId={entry.slug}
                />
              </section>
            )}

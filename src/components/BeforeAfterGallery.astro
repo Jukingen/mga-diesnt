@@ -1,21 +1,27 @@
 ---
 /**
- * Vorher/Nachher-Galerie: İki görsel yan yana, caption, tıklanınca modal.
+ * Vorher/Nachher-Galerie: İki görsel yan yana, caption, tıklanınca ortak modal.
  */
+import VorherNachherModal from './VorherNachherModal.astro';
+
 interface Props {
   beforeSrc: string;
   afterSrc: string;
   caption?: string;
   title: string;
+  /** Modal ID için (alt sayfa slug vb.) */
+  modalId?: string;
 }
-const { beforeSrc, afterSrc, caption, title } = Astro.props;
+const { beforeSrc, afterSrc, caption, title, modalId = 'gallery' } = Astro.props;
 const baseAlt = `${title} – Vorher/Nachher`;
+const vnModalId = `vorher-nachher-modal-${modalId}`;
 ---
 
 <section class="before-after-gallery rounded-2xl overflow-hidden border border-gray-100 bg-gray-50/50">
   <div class="p-6 md:p-8">
     <h3 class="heading-4 mb-6 text-primary-600">Vorher & Nachher</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      {beforeSrc && (
       <div class="relative group">
         <span class="absolute top-3 left-3 z-10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-primary-600 text-white rounded-lg shadow-md">
           Vorher
@@ -23,8 +29,8 @@ const baseAlt = `${title} – Vorher/Nachher`;
         <button
           type="button"
           class="image-trigger w-full aspect-[4/3] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-zoom-in block"
-          data-src={beforeSrc}
-          data-alt={`${baseAlt} - Vorher`}
+          data-vorher-nachher-modal={vnModalId}
+          data-initial="vorher"
           aria-label="Vorher-Bild vergrößern"
         >
           <img
@@ -39,6 +45,8 @@ const baseAlt = `${title} – Vorher/Nachher`;
           />
         </button>
       </div>
+      )}
+      {afterSrc && (
       <div class="relative group">
         <span class="absolute top-3 left-3 z-10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-primary-600 text-white rounded-lg shadow-md">
           Nachher
@@ -46,8 +54,8 @@ const baseAlt = `${title} – Vorher/Nachher`;
         <button
           type="button"
           class="image-trigger w-full aspect-[4/3] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-zoom-in block"
-          data-src={afterSrc}
-          data-alt={`${baseAlt} - Nachher`}
+          data-vorher-nachher-modal={vnModalId}
+          data-initial="nachher"
           aria-label="Nachher-Bild vergrößern"
         >
           <img
@@ -62,6 +70,7 @@ const baseAlt = `${title} – Vorher/Nachher`;
           />
         </button>
       </div>
+      )}
     </div>
     {caption && (
       <p class="mt-5 text-gray-600 text-sm md:text-base leading-relaxed">{caption}</p>
@@ -69,77 +78,7 @@ const baseAlt = `${title} – Vorher/Nachher`;
   </div>
 </section>
 
-<!-- Modal -->
-<div
-  id="image-modal"
-  class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black/80 p-4"
-  role="dialog"
-  aria-modal="true"
-  aria-label="Bild vergrößert"
-  tabindex="-1"
->
-  <div class="modal-backdrop absolute inset-0" aria-hidden="true"></div>
-  <div class="relative z-10 max-w-4xl w-full max-h-[90vh] flex items-center justify-center">
-    <img
-      id="modal-image"
-      src=""
-      alt=""
-      class="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
-    />
-    <button
-      type="button"
-      id="modal-close"
-      class="absolute -top-12 right-0 p-2 text-white hover:text-primary-300 transition-colors rounded focus:outline-none focus:ring-2 focus:ring-white"
-      aria-label="Schließen"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
-</div>
-
-<script>
-  (function () {
-    const modal = document.getElementById('image-modal');
-    const modalImg = document.getElementById('modal-image');
-    const closeBtn = document.getElementById('modal-close');
-    const backdrop = modal?.querySelector('.modal-backdrop');
-    const triggers = document.querySelectorAll('.image-trigger');
-
-    function openModal(src: string, alt: string) {
-      if (!modal || !modalImg) return;
-      modalImg.src = src;
-      modalImg.alt = alt;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-      closeBtn?.focus();
-    }
-
-    function closeModal() {
-      if (!modal) return;
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-
-    triggers.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const src = (btn as HTMLElement).dataset.src;
-        const alt = (btn as HTMLElement).dataset.alt || '';
-        if (src) openModal(src, alt);
-      });
-    });
-
-    closeBtn?.addEventListener('click', closeModal);
-    backdrop?.addEventListener('click', closeModal);
-
-    modal?.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal();
-    });
-  })();
-</script>
+<VorherNachherModal id={modalId} beforeSrc={beforeSrc || ''} afterSrc={afterSrc || ''} title={title} />
 
 <style>
   @media (prefers-reduced-motion: reduce) {

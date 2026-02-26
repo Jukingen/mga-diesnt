@@ -1,0 +1,182 @@
+---
+/**
+ * Ortak Vorher/Nachher modal: hem alt sayfa hem /leistungen kartları için.
+ * Modal içinde Vorher | Nachher tab switch, büyük görsel alanı.
+ */
+interface Props {
+  id: string;
+  beforeSrc: string;
+  afterSrc: string;
+  title: string;
+}
+const { id, beforeSrc, afterSrc, title } = Astro.props;
+const modalId = `vorher-nachher-modal-${id}`;
+const baseAlt = `${title} – Vorher/Nachher`;
+const hasBoth = !!(beforeSrc && afterSrc);
+const hasVorher = !!beforeSrc;
+const hasNachher = !!afterSrc;
+const hasAny = hasVorher || hasNachher;
+---
+
+{hasAny && (
+<!-- Ortak Vorher/Nachher modal: büyük görsel, tab switch -->
+<div
+  id={modalId}
+  class="vorher-nachher-modal fixed inset-0 z-[100] hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Bild vergrößert – Vorher oder Nachher"
+  aria-hidden="true"
+  tabindex="-1"
+  data-before-src={beforeSrc}
+  data-after-src={afterSrc}
+>
+  <!-- Overlay -->
+  <div class="modal-backdrop absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer" aria-hidden="true"></div>
+  <!-- Dialog -->
+  <div class="modal-dialog relative z-10 w-[95vw] sm:w-[92vw] max-w-6xl max-h-[90vh] flex flex-col rounded-2xl bg-white shadow-2xl overflow-hidden pointer-events-auto" role="document" tabindex="-1">
+    <!-- Header: Vorher | Nachher tabs + Close -->
+    <div class="flex items-center justify-between gap-4 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+      <div class="flex gap-1" role="tablist" aria-label="Vorher oder Nachher wählen">
+        {hasVorher && (
+          <button
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls={`${modalId}-panel`}
+            id={`${modalId}-tab-vorher`}
+            class="vorher-tab px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-primary-100 text-primary-700"
+            data-tab="vorher"
+          >
+            Vorher
+          </button>
+        )}
+        {hasNachher && (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={!hasVorher}
+            aria-controls={`${modalId}-panel`}
+            id={`${modalId}-tab-nachher`}
+            class={`nachher-tab px-4 py-2 text-sm font-medium rounded-lg transition-colors hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 ${!hasVorher ? 'bg-primary-100 text-primary-700' : ''}`}
+            data-tab="nachher"
+          >
+            Nachher
+          </button>
+        )}
+      </div>
+      <button
+        type="button"
+        class="modal-close -mr-1 p-2 text-slate-500 hover:text-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        aria-label="Schließen"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <!-- Image panel -->
+    <div
+      id={`${modalId}-panel`}
+      role="tabpanel"
+      class="flex-1 min-h-0 flex items-center justify-center p-4 overflow-auto"
+    >
+      {hasVorher && (
+        <img
+          class="modal-img-vorher w-full max-h-[80vh] object-contain rounded-xl"
+          src={beforeSrc}
+          alt={`${baseAlt} - Vorher`}
+          data-tab="vorher"
+        />
+      )}
+      {hasNachher && (
+        <img
+          class={`modal-img-nachher w-full max-h-[80vh] object-contain rounded-xl ${hasVorher ? 'hidden' : ''}`}
+          src={afterSrc}
+          alt={`${baseAlt} - Nachher`}
+          data-tab="nachher"
+        />
+      )}
+    </div>
+  </div>
+</div>
+)}
+
+<script is:inline define:vars={{ modalId, hasVorher, hasNachher, hasBoth }}>
+  (function () {
+    var modal = document.getElementById(modalId);
+    if (!modal) return;
+    var backdrop = modal.querySelector('.modal-backdrop');
+    var closeBtn = modal.querySelector('.modal-close');
+    var vorherTab = modal.querySelector('.vorher-tab');
+    var nachherTab = modal.querySelector('.nachher-tab');
+    var imgVorher = modal.querySelector('.modal-img-vorher');
+    var imgNachher = modal.querySelector('.modal-img-nachher');
+
+    function showTab(tab) {
+      if (tab === 'vorher' && vorherTab && imgVorher) {
+        vorherTab.setAttribute('aria-selected', 'true');
+        vorherTab.classList.add('bg-primary-100', 'text-primary-700');
+        imgVorher.classList.remove('hidden');
+        if (nachherTab && imgNachher) {
+          nachherTab.setAttribute('aria-selected', 'false');
+          nachherTab.classList.remove('bg-primary-100', 'text-primary-700');
+          imgNachher.classList.add('hidden');
+        }
+      } else if (tab === 'nachher' && nachherTab && imgNachher) {
+        nachherTab.setAttribute('aria-selected', 'true');
+        nachherTab.classList.add('bg-primary-100', 'text-primary-700');
+        imgNachher.classList.remove('hidden');
+        if (vorherTab && imgVorher) {
+          vorherTab.setAttribute('aria-selected', 'false');
+          vorherTab.classList.remove('bg-primary-100', 'text-primary-700');
+          imgVorher.classList.add('hidden');
+        }
+      }
+    }
+
+    function openModal(initialTab) {
+      if (initialTab === 'nachher' && hasNachher) {
+        showTab('nachher');
+      } else if (hasVorher) {
+        showTab('vorher');
+      } else if (hasNachher) {
+        showTab('nachher');
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      var focusEl = (vorherTab && initialTab !== 'nachher') ? vorherTab : (nachherTab || closeBtn);
+      if (focusEl) focusEl.focus();
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+
+    function setupListeners() {
+      if (vorherTab) vorherTab.addEventListener('click', function () { showTab('vorher'); });
+      if (nachherTab) nachherTab.addEventListener('click', function () { showTab('nachher'); });
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (backdrop) backdrop.addEventListener('click', closeModal);
+      modal.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+      });
+    }
+    setupListeners();
+
+    document.querySelectorAll('[data-vorher-nachher-modal="' + modalId + '"]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal(btn.getAttribute('data-initial') || 'vorher');
+      });
+    });
+  })();
+</script>
