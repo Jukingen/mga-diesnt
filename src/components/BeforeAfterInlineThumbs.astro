@@ -1,0 +1,42 @@
+---
+/**
+ * Ana sayfa kartları için inline before/after thumbnail preview.
+ * Modal yok, sadece küçük görsel önizleme. Tıklanabilir değil.
+ */
+interface Props {
+  beforeSrc: string;
+  afterSrc: string;
+  title: string;
+}
+const { beforeSrc, afterSrc, title } = Astro.props;
+const baseAlt = `${title} – Vorher/Nachher`;
+---
+
+<div class="flex gap-3 flex-shrink-0" role="presentation" aria-hidden="true">
+  <div class="relative w-24 h-14 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+    <img
+      src={beforeSrc}
+      alt={`${baseAlt} - Vorher`}
+      class="w-full h-full object-cover"
+      loading="lazy"
+      decoding="async"
+      width="96"
+      height="56"
+      onerror="this.onerror=null;this.style.display='none'"
+    />
+    <span class="absolute top-1 left-1 px-1.5 py-0.5 text-[10px] font-medium bg-white/90 rounded text-gray-600">Vorher</span>
+  </div>
+  <div class="relative w-24 h-14 rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+    <img
+      src={afterSrc}
+      alt={`${baseAlt} - Nachher`}
+      class="w-full h-full object-cover"
+      loading="lazy"
+      decoding="async"
+      width="96"
+      height="56"
+      onerror="this.onerror=null;this.style.display='none'"
+    />
+    <span class="absolute top-1 left-1 px-1.5 py-0.5 text-[10px] font-medium bg-white/90 rounded text-gray-600">Nachher</span>
+  </div>
+</div>
