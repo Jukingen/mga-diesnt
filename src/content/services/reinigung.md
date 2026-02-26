@@ -24,11 +24,9 @@ items:
   - Tatortreinigung
   - Weitere Reinigungen auf Anfrage!
 beforeAfter:
-  beforeImage:
-    src: /uploads/clay-banks-e6pk_snsssy-unsplash.jpg
-    hidden: false
-  afterImage:
-    src: /uploads/giorgio-trovato-5txz228u4eo-unsplash.jpg
-    hidden: false
+  beforeImageSrc: /uploads/clay-banks-e6pk_snsssy-unsplash.jpg
+  beforeImageHidden: false
+  afterImageSrc: /uploads/giorgio-trovato-5txz228u4eo-unsplash.jpg
+  afterImageHidden: false
   caption: Beispiel einer professionellen Reinigung – Vorher und Nachher.
 ---

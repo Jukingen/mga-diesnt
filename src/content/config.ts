@@ -67,12 +67,30 @@ const servicesCollection = defineCollection({
             description: z.string().optional(),
         }).optional(),
         order: z.number().default(99),
-        /** Vorher/Nachher: Detay sayfası için before/after. */
-        beforeAfter: z.object({
+        /** Vorher/Nachher: Detay sayfası için before/after. CMS flat format (Src/Hidden) schema tarafından nested formata dönüştürülür. */
+        beforeAfter: z.preprocess((val) => {
+            if (!val || typeof val !== 'object') return val;
+            const v = val as Record<string, unknown>;
+            if ('beforeImageSrc' in v || 'afterImageSrc' in v) {
+                const norm = (s: unknown) => {
+                    if (!s || typeof s !== 'string') return undefined;
+                    const t = String(s).trim();
+                    return t ? (t.startsWith('/') ? t : `/${t}`) : undefined;
+                };
+                const bSrc = norm(v.beforeImageSrc);
+                const aSrc = norm(v.afterImageSrc);
+                return {
+                    beforeImage: bSrc ? { src: bSrc, hidden: !!v.beforeImageHidden } : undefined,
+                    afterImage: aSrc ? { src: aSrc, hidden: !!v.afterImageHidden } : undefined,
+                    caption: v.caption,
+                };
+            }
+            return val;
+        }, z.object({
             beforeImage: imageFieldSchema,
             afterImage: imageFieldSchema,
             caption: z.string().optional(),
-        }).optional(),
+        }).optional()),
         // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),
         description: z.string().optional(),

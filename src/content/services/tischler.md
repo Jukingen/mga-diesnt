@@ -7,10 +7,8 @@ items:
   - Sockelleisten ersetzen
   - Bodenlegen (Fertigparkett, Laminatboden, Vinylboden usw.)
 beforeAfter:
-  beforeImage:
-    src: /uploads/pille-r-priske-y1jjwhhaprm-unsplash.jpg
-    hidden: false
-  afterImage:
-    src: /uploads/toon-lambrechts-0fti9cetuoc-unsplash.jpg
-    hidden: false
+  beforeImageSrc: /uploads/pille-r-priske-y1jjwhhaprm-unsplash.jpg
+  beforeImageHidden: false
+  afterImageSrc: /uploads/toon-lambrechts-0fti9cetuoc-unsplash.jpg
+  afterImageHidden: false
 ---
