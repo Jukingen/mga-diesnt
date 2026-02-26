@@ -1,10 +1,8 @@
 ---
 /**
  * Kartın üstünde before/after thumbnails (relative flow, mobil uyumlu).
- * Tıklanınca ortak VorherNachherModal açılır.
+ * Tıklanınca page-level VorherNachherModal açılır (modal kart dışında render edilir).
  */
-import VorherNachherModal from './VorherNachherModal.astro';
-
 interface Props {
   beforeSrc?: string;
   afterSrc?: string;
@@ -91,7 +89,3 @@ const containerClass = 'flex gap-2 rounded-2xl bg-slate-50/70 border border-slat
     </div>
   </div>
 </div>
-
-{!placeholder && (beforeSrc || afterSrc) && (
-  <VorherNachherModal id={id} beforeSrc={beforeSrc || ''} afterSrc={afterSrc || ''} title={title} />
-)}

@@ -3,6 +3,8 @@ import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import VorherNachherModal from '../components/VorherNachherModal.astro';
+import { getVisibleImage } from '../lib/imageUtils';
 
 const services = await getCollection('services');
 const sortedServices = services.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
@@ -93,6 +95,22 @@ const computedHeaderBanner = {
       </div>
     </div>
   </section>
+
+  <!-- Modals: page-level (kart transform'undan etkilenmez, fullscreen) -->
+  {sortedServices.map((service) => {
+    const data = service.data as { title: string; beforeAfter?: { beforeImage?: { src?: string; hidden?: boolean }; afterImage?: { src?: string; hidden?: boolean } } };
+    const beforeSrc = getVisibleImage(data.beforeAfter?.beforeImage);
+    const afterSrc = getVisibleImage(data.beforeAfter?.afterImage);
+    if (!beforeSrc && !afterSrc) return null;
+    return (
+      <VorherNachherModal
+        id={service.slug}
+        beforeSrc={beforeSrc || ''}
+        afterSrc={afterSrc || ''}
+        title={data.title}
+      />
+    );
+  })}
 
   <!-- CTA -->
   <section class="section bg-gradient-to-r from-primary-600 to-primary-700 text-white">
