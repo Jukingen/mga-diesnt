@@ -300,6 +300,8 @@ collections:
             name: "header"
             widget: "object"
             fields:
+              - {label: "Logo", name: "logo", widget: "image", required: false, hint: "Leer = Platzhalter wird angezeigt"}
+              - {label: "Logo-Alttext", name: "logo_alt", widget: "string", required: false, hint: "Leer = 'MIGA Dienstleistungen'"}
               - {label: "Markenname", name: "brand_name", widget: "string"}
               - {label: "Untertitel (Optional)", name: "optional_subtitle", widget: "string", required: false}
               - {label: "Header CTA Text", name: "header_cta_label", widget: "string"}

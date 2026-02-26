@@ -10,6 +10,7 @@ header:
   optional_subtitle: Ihr Partner für alles
   header_cta_label: Angebot anfordern
   header_cta_link: /kontakt
+  logo: /uploads/logo.jpeg
 company_info:
   street: Josef–Pock–Strasse 66
   ceo_title: Denkmal-, Fassaden- und Gebäudereinigungsmeister

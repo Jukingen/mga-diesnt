@@ -30,6 +30,8 @@ const settingsCollection = defineCollection({
             style_variant: z.enum(['dark', 'light']).optional(),
         }),
         header: z.object({
+            logo: z.string().optional(),
+            logo_alt: z.string().optional(),
             brand_name: z.string(),
             optional_subtitle: z.string().optional(),
             header_cta_label: z.string(),
