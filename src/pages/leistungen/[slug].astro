@@ -27,8 +27,16 @@ const pageDescription = seo?.description || legacyDescription || `Professionelle
 
 const hasLegacyItems = legacyItems && legacyItems.length > 0;
 
-// Vorher/Nachher: sadece her iki görsel varsa göster
-const hasBeforeAfter = beforeAfter?.beforeImage && beforeAfter?.afterImage;
+// Path normalizasyonu (Decap CMS bazen obje veya path formatı farklı döndürür)
+function normImg(v: string | { url?: string; path?: string } | undefined): string {
+  if (!v) return '';
+  if (typeof v === 'string') return v.startsWith('/') ? v : `/${v}`;
+  const u = (v as { url?: string; path?: string }).url ?? (v as { path?: string }).path;
+  return u ? (u.startsWith('/') ? u : `/${u}`) : '';
+}
+const beforeSrc = normImg(beforeAfter?.beforeImage);
+const afterSrc = normImg(beforeAfter?.afterImage);
+const hasBeforeAfter = !!beforeSrc && !!afterSrc;
 const allServices = (await getCollection('services')).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
@@ -60,10 +68,9 @@ const allServices = (await getCollection('services')).sort((a, b) => (a.data.ord
            {/* Vorher/Nachher Block - nur wenn beide Bilder vorhanden */}
            {hasBeforeAfter && (
              <section class="mb-12">
-               <h3 class="heading-4 mb-6 text-primary-600">Vorher & Nachher</h3>
                <BeforeAfterGallery
-                 beforeSrc={beforeAfter!.beforeImage!}
-                 afterSrc={beforeAfter!.afterImage!}
+                 beforeSrc={beforeSrc}
+                 afterSrc={afterSrc}
                  caption={beforeAfter?.caption}
                  title={title}
                />

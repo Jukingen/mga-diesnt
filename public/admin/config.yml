@@ -6,8 +6,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "public/assets/uploads"
-public_folder: "/assets/uploads"
+media_folder: "public/uploads"
+public_folder: "/uploads"
 
 locale: "de"
 
@@ -251,11 +251,12 @@ collections:
         widget: "object"
         required: false
         collapsed: true
-        hint: "Zwei Bilder mit kurzer Beschreibung für den Vorher/Nachher-Bereich auf der Detailseite"
+        hint: "Detailseite: Vorher/Nachher-Bilder. Übersichtsseite: Badge-Bild oben auf der Karte."
         fields:
-          - {label: "Vorher Bild", name: "beforeImage", widget: "image", required: false}
+          - {label: "Vorher–Nachher Badge (Bild)", name: "badgeImage", widget: "image", required: false, hint: "Kleines Bild auf der Karte (Übersichtsseite) – zeigt nur wenn gesetzt"}
+          - {label: "Vorher Bild", name: "beforeImage", widget: "image", required: false, hint: "Für Detailseite"}
           - {label: "Nachher Bild", name: "afterImage", widget: "image", required: false}
-          - {label: "Kurzbeschreibung", name: "caption", widget: "string", required: false, hint: "Optionale Beschreibung zu den Bildern"}
+          - {label: "Kurzbeschreibung", name: "caption", widget: "string", required: false}
       
       # === SEO ===
       - label: "SEO (Optional)"

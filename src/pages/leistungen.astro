@@ -2,18 +2,15 @@
 import { getEntry, getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import ServiceCard from '../components/ServiceCard.astro';
 
 const services = await getCollection('services');
 const sortedServices = services.sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
 
-// 1. Fetch data from the 'services' page content (for banner/header)
 const entry = await getEntry('pages', 'services');
-
-// 2. Defensive Coding: Extract data with fallbacks
 const { title: pageTitle, headerBanner, seo, cta_section } = entry?.data || {};
 
-// 3. Define Fallback Constants
-const DEFAULT_BANNER_IMAGE = '/assets/uploads/default-service-banner.jpg'; // Ensure this exists or use a generic placeholder
+const DEFAULT_BANNER_IMAGE = '/assets/uploads/default-service-banner.jpg';
 const FALLBACK_TITLE = 'Unsere Leistungen';
 const FALLBACK_BANNER_TEXT = 'Professionelle Dienstleistungen für jeden Bedarf';
 const FALLBACK_CTA = {
@@ -23,12 +20,10 @@ const FALLBACK_CTA = {
   button_link: '/kontakt'
 };
 
-// 4. Resolve final values
-// User wants "Titel" from CMS (pageTitle) to be the main H1. headerBanner.text will be the subtitle.
 const finalTitle = pageTitle || FALLBACK_TITLE;
 const finalSubtitle = headerBanner?.text || FALLBACK_BANNER_TEXT;
 const finalImage = headerBanner?.image || DEFAULT_BANNER_IMAGE;
-const isBannerEnabled = headerBanner?.enabled !== false; // Default to true if not specified
+const isBannerEnabled = headerBanner?.enabled !== false;
 const bannerVariant = headerBanner?.variant || 'dark';
 
 const finalCTA = {
@@ -38,90 +33,60 @@ const finalCTA = {
   button_link: cta_section?.button_link || FALLBACK_CTA.button_link
 };
 
-// 5. Build the banner object for BaseLayout
 const computedHeaderBanner = {
   enabled: isBannerEnabled,
   text: finalTitle,
   image: finalImage,
   variant: bannerVariant,
-  // cta_label and cta_link are not in the new schema yet, so omitting or adding if needed
 };
-
 ---
 
-<BaseLayout 
+<BaseLayout
   title={seo?.title || "Unsere Leistungen - MIGA Dienstleistungen GmbH"}
   description={seo?.description || "Professionelle Dienstleistungen: Reinigung, Grünflächenpflege, Winterdienst, Transport, Tischler-, Montage-, Bauarbeiten und Sanitär in Graz."}
   headerBanner={computedHeaderBanner}
 >
-  <!-- Header -->
-  <!-- Header -->
+  <!-- Hero -->
   <section class="relative bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16 overflow-hidden">
     {finalImage && finalImage !== DEFAULT_BANNER_IMAGE && (
       <div class="absolute inset-0 z-0">
-        <img 
-          src={finalImage} 
-          alt={finalTitle} 
-          class="w-full h-full object-cover opacity-90" 
+        <img
+          src={finalImage}
+          alt={finalTitle}
+          class="w-full h-full object-cover opacity-90"
         />
         <div class="absolute inset-0 bg-gradient-to-r from-black/40 to-black/20"></div>
       </div>
     )}
-    
     <div class="container-custom relative z-10 drop-shadow-lg">
       <h1 class="heading-1 text-white mb-4">{finalTitle}</h1>
       <p class="text-xl text-white font-medium">{finalSubtitle}</p>
     </div>
   </section>
 
-  <!-- Services -->
-  <section class="section bg-white">
-    <div class="container-custom">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {sortedServices.map((service) => {
-        const data = service.data as { title: string; description?: string; image?: string; banner?: { image?: string }; beforeAfter?: { beforeImage?: string; afterImage?: string } };
-        const hasBeforeAfter = data.beforeAfter?.beforeImage && data.beforeAfter?.afterImage;
-        const cardImage = data.banner?.image ?? data.image;
-        return (
-        <a href={`/leistungen/${service.slug}`} class="group block h-full">
-          <div class="card overflow-hidden h-full flex flex-col hover:shadow-lg transition-all duration-300 border border-gray-100 group-hover:border-primary-200">
-              {cardImage && (
-                <div class="h-48 relative overflow-hidden">
-                   <img 
-                    src={cardImage} 
-                    alt={data.title} 
-                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {hasBeforeAfter && (
-                    <span class="absolute top-3 right-3 px-2 py-1 text-xs font-medium bg-primary-600 text-white rounded shadow-sm">
-                      Vorher/Nachher
-                    </span>
-                  )}
-                </div>
-              )}
-              {!cardImage && hasBeforeAfter && (
-                <div class="h-32 bg-gray-100 flex items-center justify-center relative">
-                  <span class="text-xs font-medium text-primary-600 bg-white px-3 py-1 rounded shadow-sm">Vorher/Nachher verfügbar</span>
-                </div>
-              )}
-              <div class="p-6 flex-grow flex flex-col">
-                <h2 class="heading-4 mb-3 text-primary-600 group-hover:text-primary-700 transition-colors">
-                    {data.title}
-                </h2>
-                <p class="mb-4 text-dark-600 line-clamp-3">{data.description}</p>
-                <div class="mt-auto">
-                    <span class="text-sm font-semibold text-primary-600 flex items-center">
-                        Mehr erfahren
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
-                             <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </div>
-              </div>
-          </div>
-        </a>
-      );})}
+  <!-- Services Grid -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="container-custom max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+        {sortedServices.map((service) => {
+          const data = service.data as {
+            title: string;
+            description?: string;
+            image?: string;
+            banner?: { image?: string };
+            beforeAfter?: { beforeImage?: string; afterImage?: string };
+          };
+          const cardImage = data.banner?.image ?? data.image;
+          return (
+            <ServiceCard
+              slug={service.slug}
+              title={data.title}
+              description={data.description}
+              cardImage={cardImage}
+              beforeAfter={data.beforeAfter}
+            />
+          );
+        })}
       </div>
     </div>
   </section>

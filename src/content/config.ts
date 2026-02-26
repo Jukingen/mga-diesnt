@@ -49,11 +49,13 @@ const servicesCollection = defineCollection({
             description: z.string().optional(),
         }).optional(),
         order: z.number().default(99),
-        /** Vorher/Nachher-Bilder: Mindestens 2 Bild (before, after). Erweiterbar für spätere Galerie. */
+        /** Vorher/Nachher: Detay sayfası için before/after, liste kartı için badge topper. */
         beforeAfter: z.object({
             beforeImage: z.string().optional(),
             afterImage: z.string().optional(),
             caption: z.string().optional(),
+            /** Liste kartında üstte gösterilen tek badge görseli. */
+            badgeImage: z.string().optional(),
         }).optional(),
         // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),
