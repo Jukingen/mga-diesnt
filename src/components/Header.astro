@@ -32,17 +32,17 @@ const normalizedPath = currentPath.endsWith('/') && currentPath.length > 1
         <img 
           src={logoSrc} 
           alt={logoAlt} 
-          class="h-8 md:h-10 w-auto object-contain flex-shrink-0"
+          class="h-10 md:h-20 w-auto object-contain flex-shrink-0"
           width="120"
           height="40"
           fetchpriority="high"
         />
         <div class="flex flex-col">
-          <span class="text-2xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors">
+          <span class="ml-10 text-2xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors">
             {header.brand_name}
           </span>
           {header.optional_subtitle && (
-            <span class="text-xs text-dark-500 hidden sm:inline-block -mt-1 font-medium tracking-wide">
+            <span class="ml-10 text-xs text-dark-500 hidden sm:inline-block -mt-1 font-medium tracking-wide">
               {header.optional_subtitle}
             </span>
           )}

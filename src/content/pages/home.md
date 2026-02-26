@@ -28,6 +28,6 @@ cta_section:
   secondary_btn_link: tel:+436642528150
 headerBanner:
   enabled: true
-  image: ""
+  image: /uploads/giorgio-trovato-5txz228u4eo-unsplash.jpg
   variant: dark
 ---
