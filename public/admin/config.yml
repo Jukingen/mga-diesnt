@@ -251,16 +251,8 @@ collections:
         widget: "object"
         required: false
         collapsed: true
-        hint: "Detailseite: Vorher/Nachher-Bilder. Übersichtsseite: Badge-Bild oben auf der Karte. Leeres Bild-Feld = Datei endgültig löschen. Ausblenden = Datei bleibt, wird nur nicht angezeigt."
+        hint: "Detailseite: Vorher/Nachher-Bilder. Leeres Bild-Feld = Datei endgültig löschen. Ausblenden = Datei bleibt, wird nur nicht angezeigt."
         fields:
-          - label: "Vorher–Nachher Badge (Bild)"
-            name: "badgeImage"
-            widget: "object"
-            required: false
-            hint: "Kleines Bild auf der Karte (Übersichtsseite)"
-            fields:
-              - {label: "Datei", name: "src", widget: "image", required: false}
-              - {label: "Nur auf Website ausblenden", name: "hidden", widget: "boolean", default: false, hint: "Datei bleibt erhalten, wird nur nicht angezeigt"}
           - label: "Vorher Bild"
             name: "beforeImage"
             widget: "object"
@@ -268,7 +260,7 @@ collections:
             hint: "Für Detailseite. Feld leeren = Datei endgültig entfernen"
             fields:
               - {label: "Datei", name: "src", widget: "image", required: false}
-              - {label: "Nur auf Website ausblenden", name: "hidden", widget: "boolean", default: false, hint: "Datei bleibt erhalten, wird nur nicht angezeigt"}
+              - {label: "Nur auf Website ausblenden", required: false, name: "hidden", widget: "boolean", default: false, hint: "Datei bleibt erhalten, wird nur nicht angezeigt"}
           - label: "Nachher Bild"
             name: "afterImage"
             widget: "object"
@@ -276,7 +268,7 @@ collections:
             hint: "Für Detailseite. Feld leeren = Datei endgültig entfernen"
             fields:
               - {label: "Datei", name: "src", widget: "image", required: false}
-              - {label: "Nur auf Website ausblenden", name: "hidden", widget: "boolean", default: false, hint: "Datei bleibt erhalten, wird nur nicht angezeigt"}
+              - {label: "Nur auf Website ausblenden", required: false, name: "hidden", widget: "boolean", default: false, hint: "Datei bleibt erhalten, wird nur nicht angezeigt"}
           - {label: "Kurzbeschreibung", name: "caption", widget: "string", required: false}
       
       # === SEO ===

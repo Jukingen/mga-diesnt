@@ -31,6 +31,4 @@ beforeAfter:
     src: /uploads/giorgio-trovato-5txz228u4eo-unsplash.jpg
     hidden: false
   caption: Beispiel einer professionellen Reinigung – Vorher und Nachher.
-  badgeImage:
-    hidden: true
 ---

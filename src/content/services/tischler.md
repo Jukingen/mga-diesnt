@@ -13,6 +13,4 @@ beforeAfter:
   afterImage:
     src: /uploads/toon-lambrechts-0fti9cetuoc-unsplash.jpg
     hidden: false
-  badgeImage:
-    hidden: true
 ---

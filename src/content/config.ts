@@ -67,13 +67,11 @@ const servicesCollection = defineCollection({
             description: z.string().optional(),
         }).optional(),
         order: z.number().default(99),
-        /** Vorher/Nachher: Detay sayfası için before/after, liste kartı için badge topper. */
+        /** Vorher/Nachher: Detay sayfası için before/after. */
         beforeAfter: z.object({
             beforeImage: imageFieldSchema,
             afterImage: imageFieldSchema,
             caption: z.string().optional(),
-            /** Liste kartında üstte gösterilen tek badge görseli. */
-            badgeImage: imageFieldSchema,
         }).optional(),
         // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),
