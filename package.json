@@ -7,7 +7,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "cms": "decap-server",
-    "astro": "astro"
+    "astro": "astro",
+    "cleanup-uploads": "node scripts/cleanup-unused-uploads.mjs --dry-run",
+    "cleanup-uploads:delete": "node scripts/cleanup-unused-uploads.mjs --delete"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",

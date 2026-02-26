@@ -3,8 +3,12 @@ title: "Grünflächenpflege"
 description: "Umfassende Garten- und Grünflächenbetreuung für ein gepflegtes Erscheinungsbild."
 order: 2
 beforeAfter:
-  beforeImage: /uploads/before-placeholder.svg
-  afterImage: /uploads/after-placeholder.svg
+  beforeImage:
+    src: /uploads/before-placeholder.svg
+    hidden: false
+  afterImage:
+    src: /uploads/after-placeholder.svg
+    hidden: false
   caption: "Gepflegter Garten nach unserer Grünflächenbetreuung."
 items:
   - "Rasenmähen"

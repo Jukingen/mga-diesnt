@@ -168,6 +168,18 @@ npm run preview
 
 ## 🐛 Troubleshooting
 
+### Unused Uploads Cleanup
+
+Wenn Sie in Decap CMS ein Bild entfernen ("Datei endgültig löschen"), bleibt die Datei in `public/uploads` erhalten. Um referenzlose Dateien zu bereinigen:
+
+```bash
+# Nur anzeigen (keine Löschung)
+node scripts/cleanup-unused-uploads.mjs --dry-run
+
+# Tatsächlich löschen
+node scripts/cleanup-unused-uploads.mjs --delete
+```
+
 ### Lokal CMS Önizleme (Netlify Identity olmadan)
 
 `/admin` sayfası lokal geliştirmede açılır, ancak Netlify Identity/Git Gateway lokal çalışmaz. İçerik düzenlemek için **lokal backend** kullanabilirsiniz:

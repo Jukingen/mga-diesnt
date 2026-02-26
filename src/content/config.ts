@@ -1,5 +1,23 @@
 import { defineCollection, z } from 'astro:content';
 
+/** Görsel alanı: src + hidden. Eski string formatı geriye dönük uyumluluk için transform edilir. */
+const imageFieldSchema = z
+  .union([
+    z.object({
+      src: z.string().optional().default(''),
+      hidden: z.boolean().default(false),
+    }),
+    z.string().transform((s) => ({
+      src: s && s.trim() ? (s.startsWith('/') ? s : `/${s}`) : '',
+      hidden: false,
+    })),
+  ])
+  .optional()
+  .transform((v) => {
+    if (!v) return undefined;
+    const obj = typeof v === 'object' ? v : { src: v, hidden: false };
+    return obj.src && obj.src.trim() ? obj : undefined;
+  });
 
 const settingsCollection = defineCollection({
     type: 'content',
@@ -51,11 +69,11 @@ const servicesCollection = defineCollection({
         order: z.number().default(99),
         /** Vorher/Nachher: Detay sayfası için before/after, liste kartı için badge topper. */
         beforeAfter: z.object({
-            beforeImage: z.string().optional(),
-            afterImage: z.string().optional(),
+            beforeImage: imageFieldSchema,
+            afterImage: imageFieldSchema,
             caption: z.string().optional(),
             /** Liste kartında üstte gösterilen tek badge görseli. */
-            badgeImage: z.string().optional(),
+            badgeImage: imageFieldSchema,
         }).optional(),
         // Deprecated fields (kept for backward compatibility)
         image: z.string().optional(),

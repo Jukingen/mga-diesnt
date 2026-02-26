@@ -74,7 +74,10 @@ const computedHeaderBanner = {
             description?: string;
             image?: string;
             banner?: { image?: string };
-            beforeAfter?: { beforeImage?: string; afterImage?: string };
+            beforeAfter?: {
+              beforeImage?: { src?: string; hidden?: boolean };
+              afterImage?: { src?: string; hidden?: boolean };
+            };
           };
           const cardImage = data.banner?.image ?? data.image;
           return (

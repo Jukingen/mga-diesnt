@@ -4,49 +4,46 @@
  * Before/After thumbnail strip sadece beforeImage+afterImage olan kartlarda.
  */
 import BeforeAfterFloatingThumbs from './BeforeAfterFloatingThumbs.astro';
+import { getVisibleImage } from '../lib/imageUtils';
 
 interface Props {
   slug: string;
   title: string;
   description?: string;
   cardImage?: string;
-  beforeAfter?: { beforeImage?: string; afterImage?: string };
+  beforeAfter?: { beforeImage?: { src?: string; hidden?: boolean }; afterImage?: { src?: string; hidden?: boolean } };
 }
 
 const { slug, title, description, cardImage, beforeAfter } = Astro.props;
 
-function normImg(v: string | { url?: string; path?: string } | undefined): string {
-  if (!v) return '';
-  if (typeof v === 'string') return v.startsWith('/') ? v : `/${v}`;
-  const u = (v as { url?: string; path?: string }).url ?? (v as { path?: string }).path;
-  return u ? (u.startsWith('/') ? u : `/${u}`) : '';
-}
-
-const beforeSrc = normImg(beforeAfter?.beforeImage);
-const afterSrc = normImg(beforeAfter?.afterImage);
+const beforeSrc = getVisibleImage(beforeAfter?.beforeImage);
+const afterSrc = getVisibleImage(beforeAfter?.afterImage);
 const hasBeforeAfter = !!beforeSrc && !!afterSrc;
+
+/** cardImage banner/image string path; guard ile render. */
+const showCardImage = cardImage && cardImage.trim();
 ---
 
 <div class="h-full flex flex-col">
-  {hasBeforeAfter && (
-    <BeforeAfterFloatingThumbs
-      beforeSrc={beforeSrc}
-      afterSrc={afterSrc}
-      title={title}
-      id={slug}
-    />
-  )}
+  <BeforeAfterFloatingThumbs
+    beforeSrc={beforeSrc}
+    afterSrc={afterSrc}
+    title={title}
+    id={slug}
+    placeholder={!hasBeforeAfter}
+  />
   <a
     href={`/leistungen/${slug}`}
     class="group block flex-grow min-h-0 rounded-3xl bg-transparent p-0 flex flex-col transition-all duration-500 ease-out hover:scale-[1.015]"
   >
-    {cardImage && (
+    {showCardImage && (
       <div class="rounded-2xl overflow-hidden flex-shrink-0 mb-6">
         <img
-          src={cardImage}
+          src={cardImage!.startsWith('/') ? cardImage : `/${cardImage}`}
           alt={title}
           class="w-full aspect-video object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           loading="lazy"
+          onerror="this.onerror=null;this.style.display='none'"
         />
       </div>
     )}
